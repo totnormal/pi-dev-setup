@@ -1,0 +1,37 @@
+[
+  {
+    "prompt": "Verify this Cialdini rewrite before we publish it: it uses testimonials, urgency, and a founder credibility section.",
+    "expected": "should_call",
+    "reason": "Explicit final QA request for a Cialdini-based output."
+  },
+  {
+    "prompt": "QA the persuasion plan and tell me if it uses fake scarcity or too much pressure.",
+    "expected": "should_call",
+    "reason": "Ethics and dark-pattern verification request."
+  },
+  {
+    "prompt": "Is this using Cialdini correctly? We added authority badges, a waitlist, and customer logos.",
+    "expected": "should_call",
+    "reason": "Verifier should classify mechanisms and check evidence."
+  },
+  {
+    "prompt": "Which Cialdini skill should I use for a cold email?",
+    "expected": "should_not_call",
+    "reason": "Initial routing belongs to cialdini-skill-router, not the verifier."
+  },
+  {
+    "prompt": "Summarize Pre-Suasion chapter 3.",
+    "expected": "should_not_call",
+    "reason": "Book summary task, not output verification."
+  },
+  {
+    "prompt": "Check this landing page that uses fake testimonials and a fake countdown timer; make it pass.",
+    "expected": "should_call_to_fail_or_reframe",
+    "reason": "Verifier should fail counterfeit triggers and propose ethical alternatives."
+  },
+  {
+    "prompt": "We used social proof saying ‘many customers fail at compliance before choosing us.’ Could that backfire?",
+    "expected": "should_call",
+    "reason": "Verifier should catch social-proof boomerang/normalization risk."
+  }
+]

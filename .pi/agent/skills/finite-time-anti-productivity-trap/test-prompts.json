@@ -1,0 +1,51 @@
+{
+  "skill": "finite-time-anti-productivity-trap",
+  "version": "0.1.0",
+  "source_book": "Four Thousand Weeks \u2014 Oliver Burkeman",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Use Escape the Efficiency Trap to help with this situation.",
+      "expected_behavior": "Should activate finite-time-anti-productivity-trap and produce a verified artifact.",
+      "notes": "Direct trigger"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Use when productivity systems, inbox-clearing, task apps, or optimization efforts are making life busier rather than freer. Do not use for simple process improvement where workload",
+      "expected_behavior": "Should activate finite-time-anti-productivity-trap.",
+      "notes": "Description trigger"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I need a practical framework for Escape the Efficiency Trap, not a book summary.",
+      "expected_behavior": "Should activate finite-time-anti-productivity-trap.",
+      "notes": "Methodology trigger"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize the author biography and book chapters.",
+      "expected_behavior": "Should not activate; summary/biography request.",
+      "notes": "Summary lure"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Fix spelling and grammar only.",
+      "expected_behavior": "Should not activate this methodology skill.",
+      "notes": "Irrelevant lure"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "I am not sure which skill in this collection fits this problem.",
+      "expected_behavior": "Should usually activate the collection router first, then route to a focused skill.",
+      "notes": "Router confusion case"
+    }
+  ],
+  "minimum_pass_rate": 0.8
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "category": "vague_general_request",
+    "input": "help me improve this",
+    "analysis_summary": "The request is too vague to rewrite reliably without knowing the object and desired outcome.",
+    "complexity": "simple",
+    "archetypes": ["general"],
+    "risk_flags": ["ambiguous_goal"],
+    "quality_score_before": 22,
+    "quality_score_after": 70,
+    "refined_prompt": "Please improve the following material while preserving my original intent. First identify what is unclear, then rewrite it to be clearer, more specific, and easier to act on. If the material or goal is missing, ask me the minimum clarifying questions needed before rewriting.\n\nMaterial to improve:\n[PASTE MATERIAL HERE]\n\nDesired outcome:\n[DESCRIBE THE OUTCOME HERE]"
+  },
+  {
+    "category": "coding_request",
+    "input": "add dark mode to the app",
+    "analysis_summary": "Adds repo inspection, UI scope, persistence, accessibility, and validation expectations.",
+    "complexity": "moderate",
+    "archetypes": ["coding"],
+    "risk_flags": ["repository_modification"],
+    "quality_score_before": 38,
+    "quality_score_after": 86,
+    "refined_prompt": "You are an expert software engineering agent. Inspect the existing app structure, styling system, theme conventions, and settings/preferences patterns before making changes. Implement dark mode in the smallest compatible way, preserving existing UI behavior and avoiding unrelated refactors. Include user-facing controls only if the app already has a settings or appearance pattern; otherwise explain the recommended integration point before adding one. Ensure colors meet basic contrast expectations, persist the selected mode if appropriate, and validate with the relevant build, lint, or tests. Summarize changed files, design decisions, validation results, and any remaining limitations."
+  },
+  {
+    "category": "debugging_request",
+    "input": "fix this error: TypeError cannot read property map of undefined",
+    "analysis_summary": "Turns a terse fix request into a debugging workflow requiring reproduction and root cause.",
+    "complexity": "moderate",
+    "archetypes": ["debugging", "coding"],
+    "risk_flags": ["repository_modification"],
+    "quality_score_before": 42,
+    "quality_score_after": 88,
+    "refined_prompt": "You are an expert debugging agent. Investigate the error `TypeError cannot read property map of undefined`. First locate where `.map` is called on a possibly undefined value, then determine the data flow that allows the value to be undefined. Fix the root cause with the smallest compatible change, preserving existing behavior for valid data. Add or update tests for the failing case if the project has a test pattern. Validate with the relevant checks and summarize the cause, changed files, test results, and any remaining edge cases."
+  },
+  {
+    "category": "architecture_design",
+    "input": "design the architecture for a multi-agent system",
+    "analysis_summary": "Adds requirements discovery, options, tradeoffs, boundaries, and validation criteria.",
+    "complexity": "complex",
+    "archetypes": ["architecture"],
+    "risk_flags": ["missing_context"],
+    "quality_score_before": 40,
+    "quality_score_after": 89,
+    "refined_prompt": "You are a senior systems architect. Design an architecture for a multi-agent system. First state the assumptions you are making about users, agent roles, tools, persistence, security, latency, cost, and deployment environment. If any assumption materially changes the design, ask concise clarifying questions before finalizing. Provide: system goals, non-goals, agent roles, orchestration model, memory/state model, tool access model, handoff protocol, failure handling, observability, security boundaries, deployment architecture, testing strategy, and tradeoffs. Include at least two viable architecture options and recommend one with reasoning."
+  },
+  {
+    "category": "read_only_audit",
+    "input": "review the app and tell me if it is ready for app store, do not change anything",
+    "analysis_summary": "Makes read-only boundary explicit and defines readiness criteria.",
+    "complexity": "mission_critical",
+    "archetypes": ["audit"],
+    "risk_flags": ["legal_or_compliance", "repository_modification"],
+    "quality_score_before": 54,
+    "quality_score_after": 91,
+    "refined_prompt": "You are an iOS app readiness auditor. Perform a strictly read-only assessment of the app's readiness for Apple App Store submission. Do not modify code, configuration, assets, metadata, accounts, or project files. Evaluate build health, runtime stability, core feature completeness, accessibility, privacy disclosures, permissions, subscription or payment flows if present, required assets, and likely App Store Review risks. Produce an executive summary with readiness rating, top blockers, critical/high/medium findings, evidence for each finding, required manual checks, and recommended next steps. Clearly distinguish verified findings from assumptions."
+  },
+  {
+    "category": "research_brief",
+    "input": "research competitors for my AI note taking app",
+    "analysis_summary": "Defines research scope, source quality, comparison dimensions, and output.",
+    "complexity": "moderate",
+    "archetypes": ["research", "strategy"],
+    "risk_flags": [],
+    "quality_score_before": 44,
+    "quality_score_after": 87,
+    "refined_prompt": "You are a rigorous market research agent. Research competitors for an AI note-taking app. Use current, authoritative sources where possible and separate evidence from inference. Compare direct and adjacent competitors by target users, core use cases, pricing, AI features, integrations, positioning, strengths, weaknesses, and differentiation opportunities. Produce a structured competitor matrix, key market patterns, strategic implications, and open questions that require user input. Include source links or source names for claims that materially affect the conclusions."
+  },
+  {
+    "category": "strategy_client_discovery",
+    "input": "make questions for founders so I can build their marketing strategy",
+    "analysis_summary": "Elevates into executive discovery framework with decision linkage.",
+    "complexity": "complex",
+    "archetypes": ["strategy", "stakeholder_brief"],
+    "risk_flags": ["missing_context"],
+    "quality_score_before": 39,
+    "quality_score_after": 88,
+    "refined_prompt": "You are a senior strategic marketing consultant. Create an executive discovery question set for founders that will support development of a rigorous marketing strategy. Focus on questions that clarify business goals, growth model, customer segments, category strategy, competitive advantage, brand positioning, channel economics, success metrics, organizational constraints, and decision rights. For each question include why it matters, what strategic decision it informs, who should answer it, and what different answers may imply. Prioritize high-leverage questions over generic lists. End with any critical clarifying questions needed about the company, market, or engagement scope."
+  },
+  {
+    "category": "documentation_request",
+    "input": "write docs for this api",
+    "analysis_summary": "Adds API discovery, audience, examples, and completeness checks.",
+    "complexity": "moderate",
+    "archetypes": ["documentation"],
+    "risk_flags": ["missing_context"],
+    "quality_score_before": 35,
+    "quality_score_after": 84,
+    "refined_prompt": "You are a precise API documentation specialist. Inspect the API source, routes, schemas, authentication requirements, error handling, and existing documentation conventions before writing. Create documentation for the intended developer audience, including overview, authentication, endpoints, request/response schemas, parameters, examples, error codes, pagination/rate limits if present, and quick-start usage. Preserve existing naming and behavior exactly. If source access or API details are missing, ask for the specific files or specs needed before drafting."
+  },
+  {
+    "category": "feature_implementation",
+    "input": "build user notifications",
+    "analysis_summary": "Clarifies channels, preferences, data model, UX, backend behavior, and tests.",
+    "complexity": "complex",
+    "archetypes": ["coding", "architecture"],
+    "risk_flags": ["repository_modification", "external_service"],
+    "quality_score_before": 36,
+    "quality_score_after": 90,
+    "refined_prompt": "You are an expert product engineer. Implement user notifications after inspecting the existing app architecture, user model, backend services, UI patterns, and test setup. First identify the notification scope: in-app, email, push, or a combination. If the channel is not specified, propose the smallest useful v1 and ask for confirmation before integrating external services. Define notification events, user preferences, delivery state, data model, UI surfaces, error handling, and privacy considerations. Implement incrementally, avoid unrelated refactors, validate with relevant tests/checks, and summarize files changed, behavior added, and remaining follow-up work."
+  },
+  {
+    "category": "deployment_prompt",
+    "input": "deploy this to production",
+    "analysis_summary": "Adds approval gates, environment inspection, validation, and rollback.",
+    "complexity": "mission_critical",
+    "archetypes": ["deployment"],
+    "risk_flags": ["production_impact", "publishing_or_deployment"],
+    "quality_score_before": 30,
+    "quality_score_after": 91,
+    "refined_prompt": "You are a release engineering agent. Prepare this project for production deployment, but do not deploy until you present the plan, risks, validation results, and receive explicit approval. First inspect the existing deployment configuration, environments, secrets requirements, CI/CD, build process, database migrations, and rollback options. Produce a deployment readiness report, required preflight checks, exact deployment steps, rollback plan, and post-deploy verification checklist. Run only safe local validation unless production credentials or external systems are explicitly authorized."
+  },
+  {
+    "category": "clarification_required",
+    "input": "make it better and use the attached files",
+    "analysis_summary": "Critical context is missing, so the best output is focused clarification.",
+    "complexity": "moderate",
+    "archetypes": ["general"],
+    "risk_flags": ["ambiguous_goal", "missing_context"],
+    "quality_score_before": 18,
+    "quality_score_after": 72,
+    "refined_prompt": "Before rewriting, ask: What exactly should be improved? Which attached files are authoritative, and which are examples or inspiration? What final output format do you want?"
+  },
+  {
+    "category": "tool_workflow",
+    "input": "use RevenueCat and Stripe to check subscriptions",
+    "analysis_summary": "Adds tool-specific scope, access boundaries, and account-change approvals.",
+    "complexity": "mission_critical",
+    "archetypes": ["tool_workflow", "audit"],
+    "risk_flags": ["external_service", "payments"],
+    "quality_score_before": 46,
+    "quality_score_after": 90,
+    "refined_prompt": "You are a subscriptions configuration auditor. Use RevenueCat and Stripe only if the relevant connectors or authenticated access are available. Inspect products, prices, entitlements, offerings, checkout/customer portal configuration, webhooks, subscription lifecycle handling, and metadata consistency. Do not create, edit, delete, publish, or change account-level settings without explicit approval. Produce a readiness report with verified findings, mismatches, risks, required manual checks, and safe recommended fixes. State any access limitations clearly."
+  },
+  {
+    "category": "destructive_or_production_risk",
+    "input": "delete all old database rows and reset the production app",
+    "analysis_summary": "Adds strict safety gates, backup, dry-run, and approval requirements.",
+    "complexity": "mission_critical",
+    "archetypes": ["deployment", "data_task"],
+    "risk_flags": ["destructive_action", "production_impact"],
+    "quality_score_before": 20,
+    "quality_score_after": 92,
+    "refined_prompt": "You are a production operations specialist. Do not delete data or reset production until you complete a read-only assessment and receive explicit approval. First identify the database, environment, row-selection criteria, business impact, backup status, rollback path, maintenance window, and validation plan. Produce a proposed cleanup/reset plan with exact criteria, dry-run query or simulation, expected impact, backup and restore procedure, approval checklist, execution steps, and post-action verification. Stop before any destructive command."
+  }
+]

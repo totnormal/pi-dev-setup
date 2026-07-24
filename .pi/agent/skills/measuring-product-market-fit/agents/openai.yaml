@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Market Fit"
+  short_description: "Help users assess and achieve product-market fit. Use when someone is trying to determine if they have PMF, measuring user engagement and retention, running the Sean Ellis survey, or figuring out if they should scale or keep iterating."
+  default_prompt: "Use the product-market-fit skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

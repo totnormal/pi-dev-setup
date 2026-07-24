@@ -1,0 +1,52 @@
+{
+  "skill": "voss-active-listening",
+  "version": "0.1.0",
+  "source_book": "Never Split the Difference: Negotiating as if Your Life Depended on It — Chris Voss with Tahl Raz (2016)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "how do I build rapport",
+      "expected_behavior": "应激活 voss-active-listening, 并按 E 步骤产出具体下一步。",
+      "notes": "正面 trigger。"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "The user is about to open a difficult conversation.",
+      "expected_behavior": "应激活 voss-active-listening, 诊断场景并应用该方法。",
+      "notes": "场景式 trigger。"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "they won’t open up",
+      "expected_behavior": "应激活 voss-active-listening, 不应只给泛泛建议。",
+      "notes": "同义触发。"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize the publication metadata and ISBN of this book.",
+      "expected_behavior": "不应激活本 skill; 这是信息查询。",
+      "notes": "无关诱饵。"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "I need the sibling tactic voss-labeling for this situation, not voss-active-listening.",
+      "expected_behavior": "不应激活本 skill, 应考虑 voss-labeling 或 orchestrator。",
+      "notes": "跨 skill 混淆诱饵。"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "I am choosing what to eat for dinner and want to negotiate with myself.",
+      "expected_behavior": "通常不应激活; 日常低风险选择不需要 Voss 谈判流程。",
+      "notes": "边界: 低 stakes。"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "Static QA verifies schema and trigger coverage; independent blind runtime QA can be added by darwin-skill."
+}

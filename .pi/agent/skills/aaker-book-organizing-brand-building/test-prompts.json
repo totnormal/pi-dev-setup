@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-organizing-brand-building",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me structure the org for brand building (brand czar, team, committees)",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker equity framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about organizing brand building?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

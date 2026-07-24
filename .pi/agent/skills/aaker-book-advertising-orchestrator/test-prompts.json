@@ -1,0 +1,14 @@
+{
+  "skill": "aaker-book-advertising-orchestrator",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "I need help with advertising & brand building",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Help with financial modeling",
+      "expect": "should_not_trigger"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "quietStartup": true,
+  "enableSkillCommands": true,
+  "mcpServers": {
+    "_comment": "MCPs removed to reduce startup context. Use CLIs via bash instead: context-mode search/index, npx playwright screenshot/pdf. Add back MCPs here when needed."
+  }
+}

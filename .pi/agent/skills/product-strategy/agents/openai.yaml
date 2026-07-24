@@ -1,0 +1,4 @@
+interface:
+  display_name: "Product Strategy"
+  short_description: "Master product strategy, market analysis, competitive positioning, and long-term product vision. Define business models and craft go-to-market strategies that drive success."
+  default_prompt: "Use the product-strategy skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

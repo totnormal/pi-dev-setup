@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-portfolio-focus-clarity",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me audit and rationalize the portfolio toward focus",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker architecture framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about portfolio focus clarity?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

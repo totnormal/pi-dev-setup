@@ -1,0 +1,52 @@
+{
+  "skill": "minimba-strategy-kernel",
+  "version": "0.1.0",
+  "source_book": "Good Strategy/Bad Strategy \u2014 Richard Rumelt",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Use a MiniMBA approach to help me with build the kernel of good strategy.",
+      "expected_behavior": "Should activate minimba-strategy-kernel and produce a verified artifact.",
+      "notes": "Direct trigger"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Use when a plan has goals but lacks a real strategy, or when the user needs diagnosis, guiding policy, and coherent action.",
+      "expected_behavior": "Should activate minimba-strategy-kernel.",
+      "notes": "Description trigger"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I need a practical framework for Build the Kernel of Good Strategy, not a book summary.",
+      "expected_behavior": "Should activate minimba-strategy-kernel.",
+      "notes": "Methodology trigger"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Give me a plot summary of these books and author biographies.",
+      "expected_behavior": "Should not activate; this is summary/biography.",
+      "notes": "Book-summary lure"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Proofread this email for spelling and grammar only.",
+      "expected_behavior": "Should not activate any MiniMBA strategic skill.",
+      "notes": "Irrelevant writing lure"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "Our marketing plan feels weak; I am not sure if this is strategy, evidence, media, or brand growth.",
+      "expected_behavior": "Should usually activate minimba-strategy-marketing-orchestrator first, then route to a focused skill.",
+      "notes": "Cross-skill confusion test"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "All should_not_trigger cases must pass; edge cases test orchestrator routing."
+}

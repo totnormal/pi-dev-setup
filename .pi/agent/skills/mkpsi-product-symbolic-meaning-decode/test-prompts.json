@@ -1,0 +1,54 @@
+[
+  {
+    "prompt": "Our customers say they buy our product because of quality and price. But when we removed the premium packaging, sales dropped 30%. Something doesn't add up.",
+    "should_trigger": [
+      "mkpsi-product-symbolic-meaning-decode"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Tests whether the skill correctly identifies that stated rational reasons may be rationalizations"
+  },
+  {
+    "prompt": "We need to reduce the price of our SaaS product to increase conversions.",
+    "should_trigger": [
+      "mkpsi-reduce-pain-of-payment",
+      "mkpsi-benefits-before-costs-ordering"
+    ],
+    "should_not_trigger": [
+      "mkpsi-product-symbolic-meaning-decode"
+    ],
+    "rationale": "Decoy: pricing strategy should trigger pain-of-payment, not this skill"
+  },
+  {
+    "prompt": "Help me write a survey to ask customers why they churn.",
+    "should_trigger": [
+      "mkpsi-observe-do-not-ask",
+      "mkpsi-find-real-why"
+    ],
+    "should_not_trigger": [
+      "mkpsi-product-symbolic-meaning-decode"
+    ],
+    "rationale": "Decoy: survey design should trigger observe-don't-ask, not this skill (unless this IS the suspicion skill)"
+  },
+  {
+    "prompt": "Our ad shows the product in a luxury setting but customers seem turned off. The product is mid-priced.",
+    "should_trigger": [
+      "mkpsi-product-symbolic-meaning-decode"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Decoy: symbol inconsistency should trigger product-symbolic-meaning-decode, not this skill (unless this IS that skill)"
+  },
+  {
+    "prompt": "We have the best logical argument but our board won't approve it. They keep finding irrational objections.",
+    "should_trigger": [
+      "mkpsi-mental-block-inventory-removal"
+    ],
+    "should_not_trigger": [
+      "mkpsi-product-symbolic-meaning-decode"
+    ],
+    "rationale": "Tests whether the skill identifies mental blocks vs logical argumentation"
+  }
+]

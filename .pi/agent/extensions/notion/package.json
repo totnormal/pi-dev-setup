@@ -1,0 +1,9 @@
+{
+  "name": "notion",
+  "version": "1.0.0",
+  "description": "Notion integration — read, search, and write Notion pages & databases",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": ["pi-package", "pi-extension", "notion"],
+  "license": "MIT"
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": 101,
+    "user": {"login": "senior-dev"},
+    "body": "Suggestion: Use a more descriptive variable name than 'x'.",
+    "path": "src/auth.ts",
+    "line": 42,
+    "created_at": "2025-02-20T10:00:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r101"
+  },
+  {
+    "id": 102,
+    "user": {"login": "tech-lead"},
+    "body": "This function is missing error handling. What happens if the API call fails?",
+    "path": "src/api/user.ts",
+    "line": 15,
+    "created_at": "2025-02-20T11:30:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r102"
+  },
+  {
+    "id": 103,
+    "user": {"login": "reviewer1"},
+    "body": "Consider using optional chaining here: user?.profile?.id",
+    "path": "src/components/Profile.tsx",
+    "line": 28,
+    "created_at": "2025-02-20T14:15:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r103"
+  },
+  {
+    "id": 104,
+    "user": {"login": "security-reviewer"},
+    "body": "This API key should be stored in an environment variable, not hardcoded.",
+    "path": "src/config.ts",
+    "line": 5,
+    "created_at": "2025-02-21T09:00:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r104"
+  },
+  {
+    "id": 105,
+    "user": {"login": "performance-expert"},
+    "body": "This loop is O(n^2). Consider optimizing with a hash map.",
+    "path": "src/utils/data.ts",
+    "line": 67,
+    "created_at": "2025-02-21T10:30:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r105"
+  },
+  {
+    "id": 106,
+    "user": {"login": "junior-dev"},
+    "body": "Great work on this feature! Really clean code.",
+    "path": null,
+    "line": null,
+    "created_at": "2025-02-21T16:00:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r106"
+  },
+  {
+    "id": 107,
+    "user": {"login": "docs-writer"},
+    "body": "Can you add documentation for this new API?",
+    "path": "src/api/new-endpoint.ts",
+    "line": 3,
+    "created_at": "2025-02-22T08:45:00Z",
+    "html_url": "https://github.com/owner/repo/pull/123#discussion_r107"
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "skill": "aaker-book-research-orchestrator",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "I need help with research & measurement",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Help with financial modeling",
+      "expect": "should_not_trigger"
+    }
+  ]
+}

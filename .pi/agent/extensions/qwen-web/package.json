@@ -1,0 +1,5 @@
+{
+  "name": "pi-qwen-web",
+  "private": true,
+  "description": "Qwen Web provider for pi — uses qwen.ai's internal API with auto-refreshing browser tokens"
+}

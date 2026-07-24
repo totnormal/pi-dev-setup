@@ -1,0 +1,9 @@
+{
+  "name": "growth-tools",
+  "version": "1.0.0",
+  "description": "Conversion rate optimization and funnel tools for forms, pages, popups, and user onboarding",
+  "author": {
+    "name": "Andrei Tarnovski"
+  },
+  "keywords": ["growth", "cro", "conversion", "optimization", "funnel", "onboarding"]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Retention Engine"
+  short_description: "Use this skill when users need to reduce churn, increase customer lifetime value (LTV), build recurring revenue, design upsells/cross-sells, or create customer ascension paths. Activates for retention strategy, subscription optimization, or "customers keep leaving" problems."
+  default_prompt: "Use the retention-engine skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

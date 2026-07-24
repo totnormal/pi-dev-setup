@@ -1,0 +1,4 @@
+interface:
+  display_name: "Go To Market Planner"
+  short_description: "Use when designing go-to-market strategy, selecting GTM motion (PLG/sales-led), defining ICP, planning product launches, or implementing AI-powered GTM automation. Covers channel selection, growth loops, RevOps alignment, and market entry execution."
+  default_prompt: "Use the go-to-market-planner skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

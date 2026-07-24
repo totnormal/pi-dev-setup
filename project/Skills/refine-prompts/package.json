@@ -1,0 +1,20 @@
+{
+  "name": "refine-prompts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "refine-prompts": "dist/cli.js"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "smoke": "npm run build && node tests/smoke.mjs",
+    "test": "npm run typecheck && npm run smoke"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

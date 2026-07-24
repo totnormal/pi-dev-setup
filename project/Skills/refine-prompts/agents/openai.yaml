@@ -1,0 +1,3 @@
+display_name: Refine Prompts
+short_description: Turn rough prompts into execution-ready prompts for AI agents.
+default_prompt: Improve this prompt so it is clearer, more structured, and ready for an AI agent to execute.

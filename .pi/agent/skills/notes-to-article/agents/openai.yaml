@@ -1,0 +1,4 @@
+interface:
+  display_name: "Notes to Article"
+  short_description: "Turn rough notes into publishable analytical articles."
+  default_prompt: "Use $notes-to-article to convert these rough notes into a publishable analytical article with critical interpretation and a witty editorial voice."

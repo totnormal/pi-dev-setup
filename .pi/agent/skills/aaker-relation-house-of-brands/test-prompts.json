@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-house-of-brands",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "The parent brand's image would clash with this new product — we need a totally separate brand.",
+      "expected_behavior": "Activate aaker-relation-house-of-brands; justify separation to avoid association contamination.",
+      "notes": "Avoid-association reason."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "This different retail channel needs its own brand, like our other house-of-brands setup.",
+      "expected_behavior": "Activate aaker-relation-house-of-brands; assign a separate brand per channel to avoid conflict.",
+      "notes": "Channel-conflict reason."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We want a separate brand for each niche like P&G does with detergents.",
+      "expected_behavior": "Activate aaker-relation-house-of-brands; explain niche-positioning via independent brands.",
+      "notes": "Niche functional positions."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Brand everything under our master like Virgin does.",
+      "expected_behavior": "Do NOT activate aaker-relation-house-of-brands; activate aaker-relation-branded-house (opposite end).",
+      "notes": "Sibling-confusion bait: branded house, not house of brands."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Should this new offering be a subbrand or a new brand?",
+      "expected_behavior": "Do NOT activate aaker-relation-house-of-brands; activate aaker-relation-select-separation (decision).",
+      "notes": "Sibling-confusion bait: decision matrix, not position mechanics."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "We want a Lexus-style launch with no visible Toyota link but customers will find out.",
+      "expected_behavior": "Activate aaker-relation-house-of-brands (shadow endorser is part of this position); note the hybrid credibility-without-contamination logic.",
+      "notes": "Boundary: shadow endorser sits at the top of the spectrum, within house-of-brands logic."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-branded-house, aaker-relation-select-separation) + 1 edge."
+}

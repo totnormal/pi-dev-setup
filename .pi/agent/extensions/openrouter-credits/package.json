@@ -1,0 +1,1 @@
+{"name": "openrouter-credits", "version": "1.0.0", "description": "Shows OpenRouter credit balance in the powerline footer", "type": "module", "pi": {"extensions": ["./index.ts"]}}

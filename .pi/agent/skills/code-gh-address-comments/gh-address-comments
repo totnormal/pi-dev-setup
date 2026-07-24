@@ -1,0 +1,3 @@
+#!/bin/bash
+# Skill wrapper - located at skill root for direct invocation
+exec "$(dirname "$0")/scripts/gh-address-comments" "$@"

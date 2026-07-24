@@ -1,0 +1,216 @@
+{
+  "lastChangelogVersion": "0.82.0",
+  "packages": [
+    {
+      "source": "npm:pi-subagents",
+      "skills": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-intercom"
+    },
+    {
+      "source": "npm:pi-hermes-memory",
+      "skills": []
+    },
+    {
+      "source": "npm:context-mode"
+    },
+    {
+      "source": "npm:pi-free"
+    },
+    {
+      "source": "npm:pi-free-web-search",
+      "skills": [],
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-chrome",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-powerline-footer"
+    },
+    {
+      "source": "npm:@juicesharp/rpiv-ask-user-question",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:@juicesharp/rpiv-todo",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-btw"
+    },
+    {
+      "source": "npm:@aliou/pi-guardrails"
+    },
+    {
+      "source": "npm:@vigolium/piolium",
+      "skills": [],
+      "extensions": [],
+      "prompts": [],
+      "themes": [
+        "-themes/piolium-srcery.json"
+      ]
+    },
+    {
+      "source": "npm:pi-committer",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-simplify",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:@plannotator/pi-extension",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:end-pi"
+    },
+    {
+      "source": "npm:pi-ocr",
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "git:github.com/earendil-works/pi-review",
+      "extensions": [
+        "+review.ts"
+      ],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-skills-manager"
+    },
+    {
+      "source": "npm:pi-prompt-template-model"
+    },
+    {
+      "source": "npm:pi-prompt-composer",
+      "skills": [],
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-qwen-provider"
+    },
+    {
+      "source": "npm:@a5c-ai/babysitter-pi",
+      "skills": [],
+      "extensions": []
+    },
+    {
+      "source": "npm:macos-dev-code",
+      "skills": []
+    },
+    {
+      "source": "npm:pi-ask-user",
+      "skills": [],
+      "extensions": [],
+      "prompts": []
+    },
+    {
+      "source": "npm:pi-glm-usage"
+    },
+    {
+      "source": "extensions/pi-omlx-provider"
+    },
+    {
+      "source": "npm:pi-mcp-extension"
+    },
+    {
+      "source": "../../.pi-vendored/pi-cmux"
+    },
+    {
+      "source": "npm:pi-bansos"
+    },
+    {
+      "source": "npm:jianying-subtitle",
+      "extensions": [],
+      "_note": "Disabled tool registration. Use CLI: jianying-subtitle <file> or via bash."
+    },
+    {
+      "source": "npm:pi-mcp-adapter"
+    },
+    {
+      "source": "npm:@narumitw/pi-usage"
+    }
+  ],
+  "powerline": {
+    "preset": "default",
+    "customItems": [
+      {
+        "id": "codex",
+        "statusKey": "codex-usage",
+        "position": "right",
+        "prefix": "codex",
+        "color": "warning",
+        "hideWhenMissing": true
+      },
+      {
+        "id": "glm",
+        "statusKey": "glm-usage",
+        "position": "right",
+        "prefix": "GLM",
+        "color": "accent",
+        "hideWhenMissing": true
+      },
+      {
+        "id": "openrouter-credits",
+        "statusKey": "openrouter-credits",
+        "position": "right",
+        "prefix": "$",
+        "color": "info",
+        "hideWhenMissing": true
+      }
+    ]
+  },
+  "enableSkillCommands": true,
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 16384
+  },
+  "defaultThinkingLevel": "medium",
+  "transport": "websocket-cached",
+  "retry": {
+    "enabled": true,
+    "maxRetries": 5,
+    "baseDelayMs": 500,
+    "provider": {
+      "timeoutMs": 120000,
+      "maxRetries": 0
+    }
+  },
+  "httpIdleTimeoutMs": 120000,
+  "extensions": [
+    "!extensions/notion/**",
+    "!extensions/cline/**",
+    "!extensions/prompt-refiner/**",
+    "!extensions/deepseek-web/**",
+    "!extensions/qwen-web/**",
+    "!extensions/hermes-fallback.disabled/**",
+    "!extensions/nvidia-auto.disabled/**",
+    "!extensions/nvidia-free.disabled/**"
+  ],
+  "theme": "dark",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "steeringMode": "all",
+  "doubleEscapeAction": "tree",
+  "treeFilterMode": "default",
+  "warnings": {
+    "anthropicExtraUsage": true
+  },
+  "defaultProvider": "bansos",
+  "defaultModel": "mimo-v2.5-free"
+}

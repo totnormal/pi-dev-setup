@@ -1,0 +1,14 @@
+{
+  "id": "positioning-advisor",
+  "name": "Positioning Advisor",
+  "version": "1.0.0",
+  "description": "World-class positioning strategist combining Mark Ritson's MiniMBA methodology with April Dunford's positioning frameworks. Provides brutally honest strategic marketing advice on segmentation, targeting, positioning, and objectives.",
+  "author": "Andrei Tarnovski",
+  "entryPoint": "README.md",
+  "commands": [
+    "commands/positioning.md"
+  ],
+  "agents": [
+    "agents/positioning-advisor.md"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "coding": {
+    "signals": ["code", "repo", "repository", "implement", "feature", "bug", "api", "component", "app", "build", "add", "fix"],
+    "requiredSections": ["Repository Workflow", "Validation"],
+    "defaultValidation": ["Run relevant tests or checks", "Summarize changed files and risks"]
+  },
+  "debugging": {
+    "signals": ["debug", "error", "stack trace", "failing", "crash", "logs"],
+    "requiredSections": ["Reproduction", "Root Cause", "Validation"],
+    "defaultValidation": ["Reproduce or reason from logs", "Verify the fix"]
+  },
+  "architecture": {
+    "signals": ["architecture", "system design", "scalable", "data flow"],
+    "requiredSections": ["Constraints", "Options", "Recommendation", "Tradeoffs"],
+    "defaultValidation": ["Check fit against constraints", "Identify risks and migration concerns"]
+  },
+  "audit": {
+    "signals": ["audit", "review", "evaluate", "readiness", "assess"],
+    "requiredSections": ["Review Criteria", "Findings", "Recommendations"],
+    "defaultValidation": ["Separate blockers from non-blocking issues", "Keep review read-only unless authorized"]
+  },
+  "research": {
+    "signals": ["research", "sources", "market", "literature", "evidence"],
+    "requiredSections": ["Source Requirements", "Methodology", "Synthesis"],
+    "defaultValidation": ["Use authoritative sources", "Separate evidence from inference"]
+  },
+  "strategy": {
+    "signals": ["strategy", "positioning", "growth", "brand", "business", "marketing"],
+    "requiredSections": ["Decision Framework", "Hypotheses", "Information Gaps"],
+    "defaultValidation": ["Map recommendations to decisions", "Label assumptions"]
+  },
+  "tool_workflow": {
+    "signals": ["plugin", "tool", "integration", "api", "connector", "extension"],
+    "requiredSections": ["Tool Usage Rules", "Fallbacks", "Verification"],
+    "defaultValidation": ["Use tools only when available", "Do not claim unobserved tool output"]
+  }
+}

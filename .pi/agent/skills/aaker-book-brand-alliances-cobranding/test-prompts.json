@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-brand-alliances-cobranding",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me form brand alliances and co-branding partnerships",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker architecture framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about brand alliances cobranding?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

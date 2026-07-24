@@ -1,0 +1,43 @@
+# Build artifacts & caches
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+dist/
+build/
+.next/
+.tmp/
+.cache/
+*.egg-info/
+
+# Runtime & state
+*.sqlite
+*.db
+*.db-shm
+*.db-wal
+*.log
+run-history.jsonl
+mcp-cache.json
+pi-cache-optimizer-stats.json
+models-store.json
+probe-cache.json
+provider-cache.json
+session-map.json
+
+# Secrets & auth
+auth.json
+secrets/
+*.bak
+*.bak.*
+*.backup*
+telegram.json
+trust.json
+pi-crew.json
+free.json
+qwen-web-token.json
+deepseek-web-cookie.json
+*.json.bak*
+
+# OS
+.DS_Store

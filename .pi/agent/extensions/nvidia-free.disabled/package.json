@@ -1,0 +1,13 @@
+{
+  "name": "nvidia-free",
+  "version": "1.0.0",
+  "description": "NVIDIA free models from build.nvidia.com (OpenAI-compatible endpoint)",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "nvidia"
+  ],
+  "license": "MIT"
+}

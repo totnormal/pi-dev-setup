@@ -1,0 +1,37 @@
+{
+  "name": "@decocms/zero-build-slides",
+  "version": "0.3.0",
+  "description": "Zero-build presentation engine for AI agents — Preact + htm + Tailwind CDN",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "zero-build-slides": "./bin/install-skill.mjs"
+  },
+  "files": [
+    "bin/",
+    "skills/",
+    "SKILL.md",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "slides",
+    "presentation",
+    "ai-agent",
+    "claude-code",
+    "skill",
+    "zero-build",
+    "preact"
+  ],
+  "agents": {
+    "skills": [
+      {
+        "name": "zero-build-slides",
+        "path": "./skills/zero-build-slides"
+      }
+    ]
+  }
+}

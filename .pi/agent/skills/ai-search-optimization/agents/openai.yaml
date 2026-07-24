@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ai Search Optimization"
+  short_description: ">-"
+  default_prompt: "Use the ai-search-optimization skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

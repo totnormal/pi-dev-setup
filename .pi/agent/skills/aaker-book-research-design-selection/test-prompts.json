@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-research-design-selection",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me select exploratory, descriptive, or causal design",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker research framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about research design selection?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

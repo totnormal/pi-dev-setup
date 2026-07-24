@@ -1,0 +1,5 @@
+interface:
+  display_name: "Phonetic Brand Naming"
+  short_description: "Strategy-aligned names with IPA, scoring, and real-world stress tests"
+  default_prompt: "Please enter your phonetic brand naming request and I will start the process."
+

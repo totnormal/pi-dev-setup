@@ -1,0 +1,894 @@
+#!/bin/bash
+
+# GitHub PR Comment Addressing Skill
+# Usage: skill: gh-address-comments [command] [options]
+
+set -euo pipefail
+
+# Configuration defaults
+DEFAULT_BRANCH="${PR_DEFAULT_BRANCH:-main}"
+DEFAULT_PREFIX="${PR_FIX_PREFIX:-fix:}"
+GH_HOST="${GH_HOST:-}"
+REPO="${GITHUB_REPOSITORY:-}"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Logging functions
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $*" >&2
+}
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $*" >&2
+}
+
+log_warn() {
+    echo -e "${YELLOW}[WARN]${NC} $*" >&2
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $*" >&2
+}
+
+log_debug() {
+    if [ "${DEBUG:-0}" = "1" ]; then
+        echo -e "${MAGENTA}[DEBUG]${NC} $*" >&2
+    fi
+}
+
+# Test authentication
+cmd_test_auth() {
+    log_info "Testing GitHub CLI authentication..."
+
+    if ! command -v gh &>/dev/null; then
+        log_error "GitHub CLI (gh) is not installed"
+        log_info "Install from: https://cli.github.com/"
+        return 1
+    fi
+
+    if ! gh auth status &>/dev/null; then
+        log_error "GitHub CLI is not authenticated"
+        log_info "Run: gh auth login"
+        return 1
+    fi
+
+    # Try to fetch user info
+    if gh api user &>/dev/null; then
+        local username
+        username=$(gh api user --jq '.login')
+        log_success "Authenticated as: $username"
+    else
+        log_error "Cannot access GitHub API"
+        return 1
+    fi
+
+    # Check repository access if specified
+    if [ -n "$REPO" ]; then
+        log_info "Checking repository access: $REPO"
+        if gh repo view "$REPO" &>/dev/null; then
+            log_success "Repository accessible: $REPO"
+        else
+            log_warn "Cannot access repository: $REPO"
+        fi
+    fi
+
+    return 0
+}
+
+# Get repository info
+get_repository() {
+    local repo="$1"
+
+    if [ -z "$repo" ]; then
+        # Try to get from current git repo
+        local remote_url
+        remote_url=$(git remote get-url origin 2>/dev/null || echo "")
+
+        if echo "$remote_url" | grep -q "github.com"; then
+            # Extract owner/repo from GitHub URL
+            repo=$(echo "$remote_url" | sed -E 's|.+github\.com[:/](.+/.+)(\.git)?|\1|')
+        fi
+    fi
+
+    if [ -z "$repo" ]; then
+        log_error "No repository specified and could not determine from git remote"
+        log_info "Set GITHUB_REPOSITORY or use --repo flag"
+        return 1
+    fi
+
+    echo "$repo"
+}
+
+# Get PR information
+get_pr_info() {
+    local pr_number="$1"
+    local repo="${2:-$REPO}"
+    local fixture_dir="${GH_ADDRESS_COMMENTS_FIXTURES:-}"
+    local fixture="$fixture_dir/pr-${pr_number}-info.json"
+
+    # Check for fixture first
+    if [ -n "$fixture_dir" ] && [ -f "$fixture" ]; then
+        log_debug "Using fixture: $fixture"
+        if command -v jq &>/dev/null; then
+            jq -c '.' "$fixture"
+        else
+            cat "$fixture"
+        fi
+        return 0
+    fi
+
+    repo=$(get_repository "$repo")
+
+    gh api "repos/$repo/pulls/$pr_number" --jq '{number: .number, title: .title, state: .state, user: .user.login, base: .base.ref, head: .head.ref, url: .html_url}'
+}
+
+# Fetch all comments for a PR
+fetch_pr_comments() {
+    local pr_number="$1"
+    local repo="${2:-$REPO}"
+    local fixture_dir="${GH_ADDRESS_COMMENTS_FIXTURES:-}"
+    local fixture="$fixture_dir/pr-${pr_number}-comments.json"
+
+    # Check for fixture first
+    if [ -n "$fixture_dir" ] && [ -f "$fixture" ]; then
+        log_debug "Using fixture: $fixture"
+        if command -v jq &>/dev/null; then
+            jq -c '.[] | {id: .id, user: (.user.login // "unknown"), body: .body, path: .path, position: .position, line: .line, created_at: .created_at, url: (.html_url // "")}' "$fixture"
+        else
+            # Fallback without jq - just output raw
+            cat "$fixture"
+        fi
+        return 0
+    fi
+
+    repo=$(get_repository "$repo")
+
+    gh api \
+        --paginate \
+        "repos/$repo/pulls/$pr_number/comments" \
+        --jq '.[] | {id: .id, user: .user.login, body: .body, path: .path, position: .position, line: .line, created_at: .created_at, url: .html_url}'
+}
+
+# Fetch review comments (threads)
+fetch_pr_review_threads() {
+    local pr_number="$1"
+    local repo="${2:-$REPO}"
+
+    repo=$(get_repository "$repo")
+
+    gh api \
+        --paginate \
+        "repos/$repo/pulls/$pr_number/comments" \
+        --jq '.[] | {id: .id, user: .user.login, body: .body, path: .path, position: .position, line: .line, created_at: .created_at, url: .html_url, thread_id: .pull_request_review_id}'
+}
+
+# Categorize comment based on content
+categorize_comment() {
+    local body="$1"
+    local category="issue"
+
+    # Convert to lowercase for matching
+    local lower_body
+    lower_body=$(echo "$body" | tr '[:upper:]' '[:lower:]')
+
+    # Check for suggestions
+    if echo "$lower_body" | grep -Eiq '(suggest|recommend|should be|could be|^> )' || \
+       echo "$body" | grep -q '```suggestion'; then
+        category="suggestion"
+    # Check for questions
+    elif echo "$lower_body" | grep -Eiq '\?|what|why|how|when|where|who|which' && \
+         echo "$lower_body" | grep -Eiq '^\s*\?' ; then
+        category="question"
+    # Check for praise
+    elif echo "$lower_body" | grep -Eiq '(great|nice|good job|well done|lgtm|looks good|excellent)' ; then
+        category="praise"
+    fi
+
+    echo "$category"
+}
+
+# Analyze PR comments
+cmd_analyze() {
+    local pr_number=""
+    local format="markdown"
+    local output=""
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --format=*)
+                format="${1#*=}"
+                ;;
+            --output=*)
+                output="${1#*=}"
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    log_info "Analyzing comments for PR #$pr_number..."
+
+    # Fetch PR info
+    local pr_info
+    pr_info=$(get_pr_info "$pr_number") || return 1
+
+    local pr_title
+    pr_title=$(echo "$pr_info" | jq -r '.title')
+
+    log_info "PR: #$pr_number - $pr_title"
+
+    # Fetch all comments
+    local comments
+    comments=$(fetch_pr_comments "$pr_number")
+
+    if [ -z "$comments" ] || [ "$(echo "$comments" | wc -l)" -eq 0 ]; then
+        log_warn "No comments found on PR #$pr_number"
+        return 0
+    fi
+
+    # Categorize comments
+    local categorized
+    categorized=$(echo "$comments" | jq -r '. as $c | "\($c.id)|\($c.user)|\($c.path)|\($c.line)|\($c.body)|\($c.url)"' | while IFS='|' read -r id user path line body url; do
+        category=$(categorize_comment "$body")
+        echo "$category|$id|$user|$path|$line|$body|$url"
+    done)
+
+    # Generate output based on format
+    local output_content
+
+    if [ "$format" = "json" ]; then
+        # Build JSON using jq from categorized pipe-separated data
+        output_content=$(echo "$categorized" | jq -R -s -c --arg pr_info "$pr_info" '
+          split("\n") | map(select(length > 0) | split("|")) as $data |
+          {
+            pr: ($pr_info | fromjson),
+            summary: {
+              total: ($data | length),
+              by_category: ($data | sort_by(.[0]) | group_by(.[0]) | map({(.[0][0]): length}) | add)
+            },
+            comments: $data | map({
+              category: .[0],
+              id: (.[1] | tonumber),
+              user: .[2],
+              path: .[3],
+              line: (if .[4] == "null" then null else (.[4] | tonumber) end),
+              body: .[5],
+              url: .[6]
+            })
+          }
+        ')
+    else
+        # Markdown output
+        output_content="# PR Comment Analysis: #$pr_number\n\n"
+        output_content+="**PR Title**: $pr_title\n\n"
+        output_content+="## Summary\n\n"
+
+        local total=0
+        local suggestions=0
+        local issues=0
+        local questions=0
+        local praise=0
+
+        while IFS='|' read -r category id user path line body url; do
+            total=$((total + 1))
+            case "$category" in
+                suggestion) suggestions=$((suggestions + 1)) ;;
+                issue) issues=$((issues + 1)) ;;
+                question) questions=$((questions + 1)) ;;
+                praise) praise=$((praise + 1)) ;;
+            esac
+        done <<< "$categorized"
+
+        output_content+="- **Total Comments**: $total\n"
+        output_content+="- **Suggestions**: $suggestions\n"
+        output_content+="- **Issues**: $issues\n"
+        output_content+="- **Questions**: $questions\n"
+        output_content+="- **Praise**: $praise\n\n"
+        output_content+="## Comments by Category\n\n"
+
+        # Group by category
+        local current_category=""
+        local comment_num=1
+
+        while IFS='|' read -r category id user path line body url; do
+            if [ "$category" != "$current_category" ]; then
+                current_category="$category"
+                local cap_category
+                cap_category=$(echo "$category" | tr '[:lower:]' '[:upper:]')
+                output_content+="### ${cap_category}\n\n"
+            fi
+
+            output_content+="#### $comment_num. [Comment by @$user]($url)\n\n"
+            # File with backticks (use printf for safe literal backticks)
+            local piece
+            if [ "$line" != "null" ] && [ -n "$line" ] && [ "$line" != "0" ]; then
+                printf -v piece -- '- **File**: `%s`, line %s\n' "$path" "$line"
+            else
+                printf -v piece -- '- **File**: `%s`\n' "$path"
+            fi
+            output_content+="$piece"
+            # Body with code fence
+            printf -v piece -- '- **Body**:\n\n```\n%s\n```\n\n' "$body"
+            output_content+="$piece"
+            comment_num=$((comment_num + 1))
+        done <<< "$categorized"
+    fi
+
+    # Output to file or stdout (use printf to interpret \n escapes)
+    if [ -n "$output" ]; then
+        printf "%b" "$output_content" > "$output"
+        log_success "Analysis written to: $output"
+    else
+        printf "%b" "$output_content"
+    fi
+}
+
+# List unresolved comments
+cmd_list_unresolved() {
+    local pr_number=""
+    local format="markdown"
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --format=*)
+                format="${1#*=}"
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    log_info "Fetching unresolved comments for PR #$pr_number..."
+
+    local comments
+    comments=$(fetch_pr_comments "$pr_number")
+
+    if [ -z "$comments" ] || [ "$(echo "$comments" | wc -l)" -eq 0 ]; then
+        log_warn "No comments found"
+        return 0
+    fi
+
+    # For now, all comments are considered unresolved
+    # In the future, could check if thread is marked resolved
+
+    if [ "$format" = "json" ]; then
+        echo "$comments"
+    else
+        printf "# Unresolved Comments: PR #%s\n\n" "$pr_number"
+        echo "$comments" | jq -r '"### [Comment by @\(.user)](\(.url))\n\n- **File**: \(.path)\n- **Line**: \(.line // "N/A")\n- **Body**:\n\n```\n\(.body)\n```\n"'
+    fi
+}
+
+# Generate fix plan
+cmd_plan() {
+    local pr_number=""
+    local output=""
+    local format="markdown"
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --output=*)
+                output="${1#*=}"
+                ;;
+            --format=*)
+                format="${1#*=}"
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    log_info "Generating fix plan for PR #$pr_number..."
+
+    # Run analyze and append plan section
+    local analysis
+    analysis=$(cmd_analyze --pr="$pr_number" --format="$format") || return 1
+
+    local plan_content="$analysis\n\n## Fix Plan\n\n"
+
+    # Add recommendations based on comment categories
+    plan_content+="Based on the analysis, consider the following approach:\n\n"
+    plan_content+="1. **Review all suggestions** and implement code changes\n"
+    plan_content+="2. **Address issues** that require clarification or fixes\n"
+    plan_content+="3. **Respond to questions** with explanations or additional context\n"
+    plan_content+="4. **Create commits** with clear, descriptive messages\n"
+    plan_content+="5. **Push changes** to the PR branch\n"
+    plan_content+="6. **Mark comments as resolved** after addressing\n\n"
+    plan_content+="### Suggested Commit Structure\n\n"
+    plan_content+="Separate commits by logical grouping:\n"
+    local piece
+    printf -v piece -- '- `%s` for new features or additions\n' 'feat:'; plan_content+="$piece"
+    printf -v piece -- '- `%s` for bug fixes\n' 'fix:'; plan_content+="$piece"
+    printf -v piece -- '- `%s` for code improvements without behavior changes\n' 'refactor:'; plan_content+="$piece"
+    printf -v piece -- '- `%s` for documentation updates\n\n' 'docs:'; plan_content+="$piece"
+    plan_content+="### Example Commands\n\n"
+    printf -v piece -- '```bash\n'; plan_content+="$piece"
+    plan_content+="# Make changes based on suggestions\n"
+    plan_content+="# Stage changes\n"
+    plan_content+="git add .\n\n"
+    plan_content+="# Create commit\n"
+    plan_content+="git commit -m \"fix: address review feedback on authentication flow\"\n\n"
+    plan_content+="# Push to PR branch\n"
+    plan_content+="git push origin HEAD\n"
+    printf -v piece -- '```\n'; plan_content+="$piece"
+
+    if [ -n "$output" ]; then
+        printf "%b" "$plan_content" > "$output"
+        log_success "Fix plan written to: $output"
+    else
+        printf "%b" "$plan_content"
+    fi
+}
+
+# Create fix commits
+cmd_fix() {
+    local pr_number=""
+    local comment_id=""
+    local fix_type=""
+    local commit_message=""
+    local dry_run=0
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --comment-id=*)
+                comment_id="${1#*=}"
+                ;;
+            --type=*)
+                fix_type="${1#*=}"
+                ;;
+            --message=*)
+                commit_message="${1#*=}"
+                ;;
+            --dry-run)
+                dry_run=1
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    if [ -z "$comment_id" ] && [ -z "$fix_type" ]; then
+        log_error "Must specify either --comment-id or --type"
+        return 1
+    fi
+
+    log_info "Preparing fix for PR #$pr_number..."
+
+    # Get PR info to determine branch
+    local pr_info
+    pr_info=$(get_pr_info "$pr_number") || return 1
+
+    local pr_branch
+    pr_branch=$(echo "$pr_info" | jq -r '.head.ref')
+    local pr_title
+    pr_title=$(echo "$pr_info" | jq -r '.title')
+
+    log_info "PR branch: $pr_branch"
+
+    # Check if branch exists locally, if not checkout
+    if ! git branch --list "$pr_branch" | grep -q "$pr_branch"; then
+        log_info "Fetching branch $pr_branch..."
+        git fetch origin "$pr_branch":"$pr_branch" || {
+            log_warn "Could not fetch branch, creating from current state"
+            git checkout -b "$pr_branch"
+        }
+    fi
+
+    # Checkout PR branch
+    log_info "Checking out branch: $pr_branch"
+    git checkout "$pr_branch" || {
+        log_error "Could not checkout branch: $pr_branch"
+        log_info "Make sure you have no uncommitted changes"
+        return 1
+    }
+
+    # Determine which comments to fix
+    local target_comments
+
+    if [ -n "$comment_id" ]; then
+        target_comments=$(fetch_pr_comments "$pr_number" | jq -r --arg cid "$comment_id" 'select(.id == ($cid | tonumber))')
+    else
+        # Filter by type using bash categorize_comment function
+        target_comments=$(fetch_pr_comments "$pr_number" | while IFS= read -r comment; do
+            body=$(echo "$comment" | jq -r '.body')
+            category=$(categorize_comment "$body")
+            if [ "$category" = "$fix_type" ]; then
+                echo "$comment"
+            fi
+        done)
+    fi
+
+    if [ -z "$target_comments" ]; then
+        log_warn "No matching comments found"
+        return 0
+    fi
+
+    local comment_count
+    comment_count=$(echo "$target_comments" | jq -s 'length' 2>/dev/null || echo "1")
+
+    log_info "Found $comment_count comment(s) to address"
+
+    # Display comments
+    echo "$target_comments" | jq -r '"- [Comment #\(.id)](\(.url)) by @\(.user) in \(.path):\(.line // "?")"'
+
+    if [ "$dry_run" -eq 1 ]; then
+        log_warn "DRY RUN: Would create commit addressing these comments"
+        log_info "Commit message would be: ${commit_message:-"Address review feedback"}"
+        return 0
+    fi
+
+    # Prompt for confirmation
+    read -p "Create commit addressing these comments? (y/N): " -n 1 -r
+    echo
+    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+        log_info "Cancelled"
+        return 0
+    fi
+
+    # Default commit message if not provided
+    if [ -z "$commit_message" ]; then
+        commit_message="${DEFAULT_PREFIX} address $comment_count review comment(s) on PR #$pr_number"
+    fi
+
+    # Check if there are changes to commit
+    if git diff --quiet && git diff --cached --quiet; then
+        log_warn "No changes detected. Make your code changes first."
+        log_info "This script helps you create commits, but you need to implement the fixes manually or via separate automation."
+        return 0
+    fi
+
+    # Stage and commit
+    log_info "Staging changes..."
+    git add .
+
+    log_info "Creating commit..."
+    git commit -m "$commit_message"
+
+    log_success "Commit created: $(git log -1 --oneline)"
+    log_info "Don't forget to push: git push origin $pr_branch"
+
+    return 0
+}
+
+# Resolve comments
+cmd_resolve() {
+    local pr_number=""
+    local all_comments=0
+    local comment_id=""
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --all)
+                all_comments=1
+                ;;
+            --comment-id=*)
+                comment_id="${1#*=}"
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    if [ "$all_comments" -eq 0 ] && [ -z "$comment_id" ]; then
+        log_error "Must specify either --all or --comment-id"
+        return 1
+    fi
+
+    log_info "Resolving comments on PR #$pr_number..."
+
+    if [ "$all_comments" -eq 1 ]; then
+        log_warn "This will reply to all comments with a standard resolution message"
+        read -p "Are you sure? (y/N): " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            log_info "Cancelled"
+            return 0
+        fi
+
+        local comments
+        comments=$(fetch_pr_comments "$pr_number")
+
+        echo "$comments" | jq -r '. as $c | "\($c.id)|\($c.user)|\($c.url)"' | while IFS='|' read -r id user url; do
+            log_info "Resolving comment by @$user..."
+            # Use gh CLI to reply
+            gh pr comment "$pr_number" --body "This comment has been addressed. Thank you for the feedback!" --repo="$REPO" || true
+        done
+
+        log_success "All comments have been replied to"
+    else
+        log_info "Resolving comment #$comment_id..."
+        # Get specific comment
+        local comment
+        comment=$(fetch_pr_comments "$pr_number" | jq -r --arg cid="$comment_id" 'select(.id == ($cid | tonify))')
+
+        if [ -z "$comment" ]; then
+            log_error "Comment #$comment_id not found"
+            return 1
+        fi
+
+        local user
+        user=$(echo "$comment" | jq -r '.user')
+
+        gh pr comment "$pr_number" --body "This comment has been addressed. Thank you for the feedback!" --repo="$REPO"
+        log_success "Comment resolved"
+    fi
+}
+
+# Interactive mode
+cmd_interactive() {
+    local pr_number=""
+
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --pr=*)
+                pr_number="${1#*=}"
+                ;;
+            --step=*)
+                # Skip to specific step
+                log_error "Step skipping not yet implemented"
+                return 1
+                ;;
+            --repo=*)
+                REPO="${1#*=}"
+                ;;
+            *)
+                log_error "Unknown option: $1"
+                return 1
+                ;;
+        esac
+        shift
+    done
+
+    if [ -z "$pr_number" ]; then
+        log_error "PR number is required (use --pr=NUMBER)"
+        return 1
+    fi
+
+    echo "========================================"
+    echo "PR Comment Addressing - Interactive Mode"
+    echo "========================================"
+    echo ""
+
+    # Step 1: Fetch and display comments
+    log_info "Step 1: Fetching PR comments..."
+    local analysis
+    analysis=$(cmd_analyze --pr="$pr_number" --format=markdown) || return 1
+
+    echo "$analysis" | head -50
+    echo ""
+    read -p "Press Enter to continue..."
+
+    # Step 2: Show list of comments to select
+    echo ""
+    log_info "Step 2: Select comments to address"
+    echo ""
+
+    local comments_json
+    comments_json=$(fetch_pr_comments "$pr_number")
+
+    local total_comments
+    total_comments=$(echo "$comments_json" | jq 'length')
+
+    if [ "$total_comments" -eq 0 ]; then
+        log_warn "No comments found. Nothing to do."
+        return 0
+    fi
+
+    echo "Comments found:"
+    echo "$comments_json" | jq -r '.[] | "  [\(.id)] @\(.user) - \(.path):\(.line // "?") - \(.body | sub("\\n"; " "))"'
+
+    echo ""
+    read -p "Enter comment IDs to address (comma-separated, or 'all'): " selection
+
+    local selected_ids=()
+    if [ "$selection" = "all" ]; then
+        echo "$comments_json" | jq -r '.[].id' | while read -r id; do
+            selected_ids+=("$id")
+        done
+    else
+        IFS=',' read -ra selected_ids <<< "$selection"
+    fi
+
+    echo ""
+    log_info "Selected ${#selected_ids[@]} comment(s) to address"
+
+    # Step 3: Create fix commit
+    echo ""
+    read -p "Create commit now? (y/N): " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        read -p "Enter commit message (or press Enter for default): " commit_message
+
+        # Checkout PR branch if needed
+        local pr_info
+        pr_info=$(get_pr_info "$pr_number")
+        local pr_branch
+        pr_branch=$(echo "$pr_info" | jq -r '.head.ref')
+
+        if ! git branch --list "$pr_branch" | grep -q "$pr_branch"; then
+            git fetch origin "$pr_branch":"$pr_branch" || true
+        fi
+        git checkout "$pr_branch" || return 1
+
+        # Check for changes
+        if git diff --quiet && git diff --cached --quiet; then
+            log_warn "No changes to commit. Make your code changes first."
+            return 0
+        fi
+
+        git add .
+        if [ -z "$commit_message" ]; then
+            commit_message="${DEFAULT_PREFIX} address ${#selected_ids[@]} review comment(s)"
+        fi
+        git commit -m "$commit_message"
+        log_success "Commit created!"
+
+        # Step 4: Optionally mark as resolved
+        echo ""
+        read -p "Reply to comments marking them as addressed? (y/N): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            for id in "${selected_ids[@]}"; do
+                log_info "Replying to comment #$id..."
+                gh pr comment "$pr_number" --body "Addressed in commit. Thank you!" --repo="$REPO" || true
+            done
+            log_success "Comments replied to"
+        fi
+
+        echo ""
+        log_info "Don't forget to push: git push origin $pr_branch"
+    fi
+}
+
+# Main command dispatcher
+main() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: gh-address-comments <command> [options]"
+        echo ""
+        echo "Commands:"
+        echo "  analyze       Analyze and categorize PR comments"
+        echo "  list-unresolved  List unresolved comments"
+        echo "  plan          Generate fix plan"
+        echo "  fix           Create commit addressing comments"
+        echo "  resolve       Mark comments as resolved"
+        echo "  interactive   Guided workflow"
+        echo "  test-auth     Test authentication"
+        echo ""
+        echo "Run 'gh-address-comments <command> --help' for more info"
+        return 1
+    fi
+
+    local command="$1"
+    shift
+
+    case "$command" in
+        analyze)
+            cmd_analyze "$@"
+            ;;
+        list-unresolved)
+            cmd_list_unresolved "$@"
+            ;;
+        plan)
+            cmd_plan "$@"
+            ;;
+        fix)
+            cmd_fix "$@"
+            ;;
+        resolve)
+            cmd_resolve "$@"
+            ;;
+        interactive)
+            cmd_interactive "$@"
+            ;;
+        test-auth)
+            cmd_test_auth "$@"
+            ;;
+        --help|-h|help)
+            echo "GitHub PR Comment Addressing Skill"
+            echo "=================================="
+            echo ""
+            echo "This skill helps you analyze and address review comments on GitHub PRs."
+            echo ""
+            echo "Quick start:"
+            echo "  1. skill: gh-address-comments test-auth"
+            echo "  2. skill: gh-address-comments interactive --pr=123"
+            echo ""
+            echo "For full documentation, see: SKILL.md"
+            ;;
+        *)
+            log_error "Unknown command: $command"
+            echo ""
+            echo "Available commands:"
+            echo "  analyze, list-unresolved, plan, fix, resolve, interactive, test-auth"
+            return 1
+            ;;
+    esac
+}
+
+# Run if executed directly (not sourced)
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    main "$@"
+fi

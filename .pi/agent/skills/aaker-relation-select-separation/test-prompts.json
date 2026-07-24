@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-select-separation",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "We're launching a new offering — should it be a subbrand or its own separate brand?",
+      "expected_behavior": "Activate aaker-relation-select-separation; run the four-question Figure 2 matrix to position it.",
+      "notes": "Core decision request."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Should we extend the master brand into this new category or create a fresh brand?",
+      "expected_behavior": "Activate aaker-relation-select-separation; evaluate L1/L2 (master contributes/strengthened) vs R1/R2 (need/fund separate brand).",
+      "notes": "Extend-vs-new decision."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "How closely should the new product be tied to our existing brand?",
+      "expected_behavior": "Activate aaker-relation-select-separation; decide spectrum position by driver-role share.",
+      "notes": "Separation-degree question."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Explain the Brand Relationship Spectrum and draw the portfolio map for the team.",
+      "expected_behavior": "Do NOT activate aaker-relation-select-separation; activate aaker-relation-spectrum (the framework/map).",
+      "notes": "Sibling-confusion bait: map, not decision."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Our extensions are diluting the master brand — what do we do?",
+      "expected_behavior": "Do NOT activate aaker-relation-select-separation; activate aaker-relation-avoid-pitfalls (dilution).",
+      "notes": "Sibling-confusion bait: risk, not positioning."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "We want to launch a budget version of our premium brand in discount stores.",
+      "expected_behavior": "Activate aaker-relation-select-separation, but expect hand-off to aaker-relation-house-of-brands (association + channel conflict) — likely UP the spectrum, not a subbrand.",
+      "notes": "Boundary: premium-to-value stretch usually needs separation, not subbranding."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-spectrum, aaker-relation-avoid-pitfalls) + 1 edge."
+}

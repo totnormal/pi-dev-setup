@@ -1,0 +1,4 @@
+{
+  "app.message.followUp": ["alt+enter"],
+  "app.message.dequeue": ["alt+up"]
+}

@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-value-proposition-design",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me design compelling, relevant, sustainable value propositions",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker strategy framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about value proposition design?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

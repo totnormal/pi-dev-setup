@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-relevance-maintenance",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me maintain relevance as the category evolves",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker relevance framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about relevance maintenance?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

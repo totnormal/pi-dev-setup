@@ -1,0 +1,51 @@
+{
+  "skill": "finite-time-priority-filter",
+  "version": "0.1.0",
+  "source_book": "Four Thousand Weeks \u2014 Oliver Burkeman",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Use Choose What to Neglect to help with this situation.",
+      "expected_behavior": "Should activate finite-time-priority-filter and produce a verified artifact.",
+      "notes": "Direct trigger"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Use when a user is overloaded and needs to decide what not to do, delay, abandon, or let be imperfect. Do not use for squeezing more tasks into the same time.",
+      "expected_behavior": "Should activate finite-time-priority-filter.",
+      "notes": "Description trigger"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I need a practical framework for Choose What to Neglect, not a book summary.",
+      "expected_behavior": "Should activate finite-time-priority-filter.",
+      "notes": "Methodology trigger"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize the author biography and book chapters.",
+      "expected_behavior": "Should not activate; summary/biography request.",
+      "notes": "Summary lure"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Fix spelling and grammar only.",
+      "expected_behavior": "Should not activate this methodology skill.",
+      "notes": "Irrelevant lure"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "I am not sure which skill in this collection fits this problem.",
+      "expected_behavior": "Should usually activate the collection router first, then route to a focused skill.",
+      "notes": "Router confusion case"
+    }
+  ],
+  "minimum_pass_rate": 0.8
+}

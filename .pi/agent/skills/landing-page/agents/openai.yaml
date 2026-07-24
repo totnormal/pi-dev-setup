@@ -1,0 +1,4 @@
+interface:
+  display_name: "Landing Page"
+  short_description: "Scaffold a production-ready static landing page with working email capture form, analytics, and responsive design. Deploys instantly to Vercel."
+  default_prompt: "Use the landing-page skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

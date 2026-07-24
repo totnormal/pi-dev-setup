@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/refine-prompts/refinement-result.schema.json",
+  "title": "RefinementResult",
+  "type": "object",
+  "required": ["analysis", "refinedPrompt", "validation", "qualityBefore", "qualityAfter", "output"],
+  "properties": {
+    "analysis": {
+      "type": "object",
+      "required": ["originalPrompt", "goal", "archetypes", "complexity", "risks", "missingContext"],
+      "properties": {
+        "originalPrompt": { "type": "string" },
+        "normalizedPrompt": { "type": "string" },
+        "goal": { "type": "string" },
+        "contextItems": { "type": "array", "items": { "type": "string" } },
+        "constraints": { "type": "array", "items": { "type": "string" } },
+        "deliverables": { "type": "array", "items": { "type": "string" } },
+        "tools": { "type": "array", "items": { "type": "string" } },
+        "files": { "type": "array", "items": { "type": "string" } },
+        "urls": { "type": "array", "items": { "type": "string" } },
+        "archetypes": { "type": "array", "items": { "type": "string" } },
+        "complexity": { "enum": ["simple", "moderate", "complex", "mission_critical"] },
+        "risks": { "type": "array", "items": { "type": "string" } },
+        "missingContext": { "type": "array", "items": { "type": "string" } },
+        "sourceHierarchy": { "type": "object" }
+      }
+    },
+    "refinedPrompt": {
+      "type": "object",
+      "required": ["text", "changed", "clarifyingQuestions"],
+      "properties": {
+        "text": { "type": "string" },
+        "changed": { "type": "boolean" },
+        "clarifyingQuestions": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["passed", "missing", "warnings"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "missing": { "type": "array", "items": { "type": "string" } },
+        "warnings": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "qualityBefore": { "$ref": "#/$defs/qualityScore" },
+    "qualityAfter": { "$ref": "#/$defs/qualityScore" },
+    "output": { "type": "string" }
+  },
+  "$defs": {
+    "qualityScore": {
+      "type": "object",
+      "required": ["clarity", "specificity", "structure", "executionReadiness", "riskControl", "assumptionControl", "overall"],
+      "properties": {
+        "clarity": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "specificity": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "structure": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "executionReadiness": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "riskControl": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "assumptionControl": { "type": "integer", "minimum": 0, "maximum": 100 },
+        "overall": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

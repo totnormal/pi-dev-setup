@@ -1,0 +1,24 @@
+{
+  "skill": "aaker-book-benefit-attitude-formation",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Help me shape benefit-based attitudes toward the brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Apply the Aaker advertising framework to my brand",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write a press release for our product launch",
+      "expect": "should_not_trigger",
+      "note": "different domain"
+    },
+    {
+      "text": "What does Aaker say about benefit attitude formation?",
+      "expect": "should_trigger",
+      "note": "edge: may need orchestrator first"
+    }
+  ]
+}

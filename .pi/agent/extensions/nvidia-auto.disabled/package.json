@@ -1,0 +1,9 @@
+{
+  "name": "nvidia-auto",
+  "version": "1.0.0",
+  "description": "NVIDIA Auto — virtual model with automatic failover through free NVIDIA models",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": ["pi-package", "pi-extension", "nvidia", "auto-fallback"],
+  "license": "MIT"
+}

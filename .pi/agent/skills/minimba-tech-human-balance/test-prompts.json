@@ -1,0 +1,51 @@
+{
+  "skill": "minimba-tech-human-balance",
+  "version": "0.1.0",
+  "source_book": "Restoring the Soul of Business \u2014 Rishad Tobaccowala",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Use Balance Technology, Data, and Human Judgment to help with this situation.",
+      "expected_behavior": "Should activate minimba-tech-human-balance and produce a verified artifact.",
+      "notes": "Direct trigger"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Use when evaluating AI, automation, analytics, data-driven management, digital transformation, or screen-based work through a human business lens. Do not use for technical architec",
+      "expected_behavior": "Should activate minimba-tech-human-balance.",
+      "notes": "Description trigger"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "I need a practical framework for Balance Technology, Data, and Human Judgment, not a book summary.",
+      "expected_behavior": "Should activate minimba-tech-human-balance.",
+      "notes": "Methodology trigger"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize the author biography and book chapters.",
+      "expected_behavior": "Should not activate; summary/biography request.",
+      "notes": "Summary lure"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Fix spelling and grammar only.",
+      "expected_behavior": "Should not activate this methodology skill.",
+      "notes": "Irrelevant lure"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "I am not sure which skill in this collection fits this problem.",
+      "expected_behavior": "Should usually activate the collection router first, then route to a focused skill.",
+      "notes": "Router confusion case"
+    }
+  ],
+  "minimum_pass_rate": 0.8
+}

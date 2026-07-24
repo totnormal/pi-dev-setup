@@ -1,0 +1,59 @@
+{
+  "skill": "voss-negotiation-orchestrator",
+  "version": "0.1.0",
+  "source_book": "Never Split the Difference: Negotiating as if Your Life Depended on It — Chris Voss with Tahl Raz (2016)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "help me negotiate this",
+      "expected_behavior": "应激活 voss-negotiation-orchestrator: 先 assess situation, 再列出 Using/Skipping 的 voss-* skill 路由理由, 生成方案, 最后用 voss-final-qa 复核并给出 Pass/Needs revision/Do not send。",
+      "notes": "正面 trigger。"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "The user wants a complete negotiation plan rather than one tactic.",
+      "expected_behavior": "应激活 voss-negotiation-orchestrator: 先 assess situation, 再列出 Using/Skipping 的 voss-* skill 路由理由, 生成方案, 最后用 voss-final-qa 复核并给出 Pass/Needs revision/Do not send。",
+      "notes": "场景式 trigger。"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "make a Voss plan",
+      "expected_behavior": "应激活 voss-negotiation-orchestrator: 先 assess situation, 再列出 Using/Skipping 的 voss-* skill 路由理由, 生成方案, 最后用 voss-final-qa 复核并给出 Pass/Needs revision/Do not send。",
+      "notes": "同义触发。"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize the publication metadata and ISBN of this book.",
+      "expected_behavior": "不应激活本 skill; 这是信息查询。",
+      "notes": "无关诱饵。"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "I need the sibling tactic voss-active-listening for this situation, not voss-negotiation-orchestrator.",
+      "expected_behavior": "不应激活本 skill, 应考虑 voss-active-listening 或 orchestrator。",
+      "notes": "跨 skill 混淆诱饵。"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "I am choosing what to eat for dinner and want to negotiate with myself.",
+      "expected_behavior": "通常不应激活; 日常低风险选择不需要 Voss 谈判流程。",
+      "notes": "边界: 低 stakes。"
+    },
+    {
+      "id": "should-trigger-04-routing-and-qa",
+      "type": "should_trigger",
+      "prompt": "I need to negotiate a vendor renewal. They gave me a deadline and a high anchor, but I also think the person I talk to may not be the real decision maker. Build the Voss plan and check the final message before I send it.",
+      "expected_behavior": "应激活 orchestrator, assess deadline/anchor/hidden stakeholder risks, route to voss-bend-reality + voss-calibrated-questions/voss-black-swan-leverage + voss-execution-how as appropriate, skip irrelevant skills with reasons, and finish with final QA.",
+      "notes": "End-to-end orchestrator test: assessment, routing, generation, reassessment/verification."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "Static QA verifies schema and trigger coverage; independent blind runtime QA can be added by darwin-skill."
+}

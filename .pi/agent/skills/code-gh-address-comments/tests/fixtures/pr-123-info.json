@@ -1,0 +1,9 @@
+{
+  "number": 123,
+  "title": "Add user authentication feature",
+  "state": "OPEN",
+  "user": { "login": "developer" },
+  "base": { "ref": "main" },
+  "head": { "ref": "feature/auth" },
+  "url": "https://github.com/owner/repo/pull/123"
+}

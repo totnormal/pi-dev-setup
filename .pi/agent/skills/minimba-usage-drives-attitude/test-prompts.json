@@ -1,0 +1,55 @@
+[
+  {
+    "prompt": "I'm looking at our brand metrics and our customers seem identical to competitors' customers. Is our targeting strategy wrong?",
+    "should_trigger": [
+      "minimba-usage-drives-attitude"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "rationale": "Tests trigger match"
+  },
+  {
+    "prompt": "Help me build a SWOT analysis for our company.",
+    "should_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "should_not_trigger": [
+      "minimba-usage-drives-attitude"
+    ],
+    "rationale": "Decoy: should trigger strategy-kernel, not this skill"
+  },
+  {
+    "prompt": "Our brand health survey shows we score lower than the leader on every attribute. We need to fix our brand image.",
+    "should_trigger": [
+      "minimba-usage-drives-attitude",
+      "minimba-usage-drives-attitude"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "rationale": "Tests whether survey interpretation triggers the right skill"
+  },
+  {
+    "prompt": "Our CRM team says we can boost profits 100% by reducing churn by 5%. Should we invest?",
+    "should_trigger": [
+      "minimba-retention-double-jeopardy",
+      "minimba-loyalty-program-evidence"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "rationale": "Tests whether retention ROI claim triggers the right skill"
+  },
+  {
+    "prompt": "We're at 60% distribution but spending heavily on TV advertising. Why isn't share growing?",
+    "should_trigger": [
+      "minimba-physical-availability-threshold",
+      "minimba-availability-growth"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "rationale": "Tests whether distribution threshold triggers the right skill"
+  }
+]

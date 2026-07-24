@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-branded-house",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "We want to brand everything under one master like Virgin does.",
+      "expected_behavior": "Activate aaker-relation-branded-house; run it as the DEFAULT and design the identity set.",
+      "notes": "Core umbrella-brand request."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Leverage our strong master across all these offerings for clarity and synergy.",
+      "expected_behavior": "Activate aaker-relation-branded-house; explain clarity/synergy/leverage payoffs.",
+      "notes": "Leverage rationale."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "One master across countries, but GE Capital vs GE Appliances need different identities.",
+      "expected_behavior": "Activate aaker-relation-branded-house; apply the 'limited identities sharing common elements' nuance.",
+      "notes": "Different-identities nuance."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "We need a separate brand for each segment because the parent would clash.",
+      "expected_behavior": "Do NOT activate aaker-relation-branded-house; activate aaker-relation-house-of-brands (opposite end).",
+      "notes": "Sibling-confusion bait: house of brands."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Where on the spectrum should this new offering go?",
+      "expected_behavior": "Do NOT activate aaker-relation-branded-house; activate aaker-relation-select-separation (decision).",
+      "notes": "Sibling-confusion bait: decision matrix."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "Our master has weak equity in this category — is branded house still the default?",
+      "expected_behavior": "Activate aaker-relation-branded-house but note: default only holds when the master is strong/credible; if not, separation (house-of-brands/endorsed) may be warranted — hand to aaker-relation-select-separation.",
+      "notes": "Boundary: default assumes master equity."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-house-of-brands, aaker-relation-select-separation) + 1 edge."
+}

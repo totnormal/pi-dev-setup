@@ -1,0 +1,4 @@
+interface:
+  display_name: "Branding"
+  short_description: "This skill should be used when the user asks to "create brand identity", "build brand kit", "logo design", "brand guidelines", "visual identity", or mentions branding, design systems, or creative assets. Creates professional brand identity and design systems that establish authority."
+  default_prompt: "Use the branding skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

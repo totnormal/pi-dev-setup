@@ -1,0 +1,14 @@
+{
+  "name": "hermes-fallback",
+  "version": "1.0.0",
+  "description": "Automatic model fallback for pi — switches models when current one fails",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "fallback",
+    "hermes"
+  ],
+  "license": "MIT"
+}

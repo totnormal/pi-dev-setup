@@ -1,0 +1,20 @@
+{
+  "skill": "aaker-book-orchestrator",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "How should we structure our brand portfolio?",
+      "expect": "should_trigger",
+      "should_route_to": "aaker-book-architecture-orchestrator"
+    },
+    {
+      "text": "Help me design advertising creative",
+      "expect": "should_trigger",
+      "should_route_to": "aaker-book-advertising-orchestrator"
+    },
+    {
+      "text": "Build a financial model",
+      "expect": "should_not_trigger"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "deepseek-web",
+  "version": "1.0.0",
+  "description": "DeepSeek Web provider for pi",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "deepseek"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

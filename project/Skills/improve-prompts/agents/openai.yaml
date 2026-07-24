@@ -1,0 +1,4 @@
+interface:
+  display_name: "Improve Prompts"
+  short_description: "Turn rough non-coding prompts into reliable prompts."
+  default_prompt: "Use $improve-prompts to transform this rough non-coding prompt into a clear, execution-ready prompt."

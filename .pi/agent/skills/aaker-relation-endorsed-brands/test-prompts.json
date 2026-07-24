@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-endorsed-brands",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "We want to endorse this new brand with the parent so it gets credibility but stays independent.",
+      "expected_behavior": "Activate aaker-relation-endorsed-brands; pick shadow/token/linked/strong and verify endorser equity.",
+      "notes": "Core endorsement request."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Add 'a [Parent] company' tagline / logo to the product without making the parent the hero.",
+      "expected_behavior": "Activate aaker-relation-endorsed-brands; implement a token endorser with consistent visual system.",
+      "notes": "Token endorser mechanic."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We want a linked name like Egg McMuffin so it implies the parent without a formal endorsement.",
+      "expected_behavior": "Activate aaker-relation-endorsed-brands; design a linked name that borrows the parent's communication task.",
+      "notes": "Linked-name variant."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Attach a subbrand that shares the driver role with the master, like Gillette Mach3.",
+      "expected_behavior": "Do NOT activate aaker-relation-endorsed-brands; activate aaker-relation-subbrand-codriver (major driver role, not minor).",
+      "notes": "Sibling-confusion bait: subbrand/co-driver, not endorsement."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Keep the brands totally separate with no link to the parent at all.",
+      "expected_behavior": "Do NOT activate aaker-relation-endorsed-brands; activate aaker-relation-house-of-brands (no link).",
+      "notes": "Sibling-confusion bait: house of brands."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "We want a token endorser but the parent is weak and unknown in this market.",
+      "expected_behavior": "Activate aaker-relation-endorsed-brands but strongly caution: a weak/unknown token endorser adds little (Providian/Nescafé-in-US lessons); may not be worth it.",
+      "notes": "Boundary: token endorser only works with known/consistent/well-regarded endorser."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-subbrand-codriver, aaker-relation-house-of-brands) + 1 edge."
+}

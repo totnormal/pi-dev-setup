@@ -1,0 +1,15 @@
+{
+  "skill": "aaker-book-output-verifier",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Verify my complete brand strategy based on Aaker",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Write me a brand strategy",
+      "expect": "should_not_trigger",
+      "note": "generator, not verifier"
+    }
+  ]
+}

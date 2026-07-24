@@ -1,0 +1,22 @@
+{
+  "mode": "copy_paste",
+  "targetAgent": "general_agent",
+  "includeAnalysis": false,
+  "includeQualityScore": false,
+  "maxSimpleWords": 18,
+  "maxModerateWords": 90,
+  "askClarifyingQuestions": true,
+  "preserveMarkdown": true,
+  "governanceDefaults": {
+    "requireApprovalForDestructiveActions": true,
+    "requireApprovalForProductionChanges": true,
+    "requireApprovalForPublishing": true,
+    "neverExposeSecrets": true,
+    "preferReadOnlyAuditBeforeMutation": true
+  },
+  "outputPreferences": {
+    "defaultFenceLanguage": "text",
+    "verboseIncludesQualityScore": true,
+    "jsonIncludesAnalysis": true
+  }
+}

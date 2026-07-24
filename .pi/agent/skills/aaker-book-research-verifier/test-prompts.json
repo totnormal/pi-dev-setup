@@ -1,0 +1,15 @@
+{
+  "skill": "aaker-book-research-verifier",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Verify my research & measurement analysis",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Check my ad campaign",
+      "expect": "should_not_trigger",
+      "note": "wrong set"
+    }
+  ]
+}

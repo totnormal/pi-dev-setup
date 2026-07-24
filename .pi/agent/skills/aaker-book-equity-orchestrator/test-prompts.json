@@ -1,0 +1,14 @@
+{
+  "skill": "aaker-book-equity-orchestrator",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "I need help with brand equity foundations",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Help with financial modeling",
+      "expect": "should_not_trigger"
+    }
+  ]
+}

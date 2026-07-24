@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-spectrum",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Map our brand portfolio — we have a master, a few endorsed brands, and some subbrands, and I'm not sure how they relate.",
+      "expected_behavior": "Activate aaker-relation-spectrum; place each offering on the spectrum by driver-role share and produce a portfolio map.",
+      "notes": "Classic portfolio-mapping request."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Explain the difference between a House of Brands and a Branded House to my team.",
+      "expected_behavior": "Activate aaker-relation-spectrum; explain the two extremes and the driver-role gradient.",
+      "notes": "Conceptual explanation of the framework."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "How are these sub-brands and endorsed brands related to our master in terms of brand architecture?",
+      "expected_behavior": "Activate aaker-relation-spectrum; classify each on the spectrum.",
+      "notes": "Audit/discovery of existing structure."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Should this new product be a subbrand or its own separate brand?",
+      "expected_behavior": "Do NOT activate aaker-relation-spectrum; activate aaker-relation-select-separation (the positioning decision).",
+      "notes": "Sibling-confusion bait: this is the decision, not the map."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Our master brand is getting diluted by too many extensions. Help.",
+      "expected_behavior": "Do NOT activate aaker-relation-spectrum; activate aaker-relation-avoid-pitfalls (dilution risk).",
+      "notes": "Sibling-confusion bait: risk triage, not framework mapping."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "Our logo looks dated — suggest a redesign.",
+      "expected_behavior": "Do NOT activate (this is visual/design work, outside brand architecture structure). Redirect to design.",
+      "notes": "Boundary: structure, not identity craft."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (one sibling bait each: aaker-relation-select-separation, aaker-relation-avoid-pitfalls) + 1 edge. All should_not_trigger must pass."
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Community Building"
+  short_description: "Comprehensive community building strategy including platform selection, channel structure, member journey mapping, engagement ladder tactics, community programming rituals, moderation guidelines, launch plan, growth strategy, and success metrics for building thriving online communities"
+  default_prompt: "Use the community-building skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

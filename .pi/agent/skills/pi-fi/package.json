@@ -1,0 +1,15 @@
+{
+  "name": "@artale/pi-fi",
+  "version": "1.0.1",
+  "description": "Call free LLMs using fi CLI — Gemini, Groq, Cerebras, OpenRouter free pool, Pollinations",
+  "keywords": ["pi-package", "free-llm", "gemini", "groq", "openrouter"],
+  "license": "MIT",
+  "author": "artale",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/artale93/pi-fi"
+  },
+  "pi": {
+    "skills": ["fi"]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "skill": "aaker-relation-orchestrator",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "We're launching a premium line but worry it'll dilute our mass-market master brand \u2014 how do we even think about this?",
+      "expect": "route",
+      "should_route_to": [
+        "aaker-relation-select-separation",
+        "aaker-relation-avoid-pitfalls"
+      ]
+    },
+    {
+      "text": "Can you explain how P&G, Virgin, and Toyota/Lexus differ in brand structure?",
+      "expect": "route",
+      "should_route_to": [
+        "aaker-relation-spectrum"
+      ]
+    },
+    {
+      "text": "Design a logo for our new subbrand",
+      "expect": "no_route",
+      "note": "visual identity, out of scope"
+    },
+    {
+      "text": "Should our new B2B offering borrow the master brand or stand alone?",
+      "expect": "route",
+      "should_route_to": [
+        "aaker-relation-select-separation"
+      ]
+    }
+  ]
+}

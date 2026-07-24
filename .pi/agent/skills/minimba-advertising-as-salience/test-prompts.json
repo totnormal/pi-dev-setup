@@ -1,0 +1,56 @@
+[
+  {
+    "prompt": "I'm looking at our brand metrics. We have 8% market share but our average purchase frequency is only 2.1x/year while the market leader at 22% share has 3.9x/year. Should we focus on getting our buyers to buy more often?",
+    "should_trigger": [
+      "minimba-advertising-as-salience"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel",
+      "minimba-playing-to-win-cascade"
+    ],
+    "rationale": "Tests whether the skill correctly identifies double jeopardy benchmarking opportunity"
+  },
+  {
+    "prompt": "Help me build a loyalty program for our SaaS platform to reduce churn.",
+    "should_trigger": [
+      "minimba-loyalty-program-evidence"
+    ],
+    "should_not_trigger": [
+      "minimba-advertising-as-salience"
+    ],
+    "rationale": "Decoy: should trigger loyalty program evidence, not this skill (unless this IS the loyalty skill)"
+  },
+  {
+    "prompt": "Our segmentation study shows our brand appeals to a completely different customer type than our main competitor. We barely share any customers.",
+    "should_trigger": [
+      "minimba-duplication-of-purchase",
+      "minimba-evidence-based-marketing"
+    ],
+    "should_not_trigger": [
+      "minimba-advertising-as-salience"
+    ],
+    "rationale": "Decoy: segmentation claim should trigger duplication-of-purchase check, not this skill (unless this IS that skill)"
+  },
+  {
+    "prompt": "We need to write a creative brief for our new ad campaign. The objective is to persuade consumers that our brand is meaningfully better than competitors.",
+    "should_trigger": [
+      "minimba-advertising-as-salience",
+      "minimba-differentiation-vs-distinctiveness"
+    ],
+    "should_not_trigger": [
+      "minimba-advertising-as-salience"
+    ],
+    "rationale": "Decoy: persuasion/differentiation brief should trigger advertising-as-salience, not this skill (unless this IS that skill)"
+  },
+  {
+    "prompt": "Our heavy buyers are churning at 15% this quarter. Something is wrong with our product.",
+    "should_trigger": [
+      "minimba-buyer-moderation-60-20",
+      "minimba-research-causality-check"
+    ],
+    "should_not_trigger": [
+      "minimba-strategy-kernel"
+    ],
+    "rationale": "Tests whether the skill identifies regression to the mean vs real churn"
+  }
+]

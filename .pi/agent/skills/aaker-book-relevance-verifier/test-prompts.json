@@ -1,0 +1,15 @@
+{
+  "skill": "aaker-book-relevance-verifier",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Verify my brand relevance & innovation analysis",
+      "expect": "should_trigger"
+    },
+    {
+      "text": "Check my ad campaign",
+      "expect": "should_not_trigger",
+      "note": "wrong set"
+    }
+  ]
+}

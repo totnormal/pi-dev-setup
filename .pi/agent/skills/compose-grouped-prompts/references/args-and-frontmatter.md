@@ -1,0 +1,340 @@
+# Frontmatter and Arguments
+
+## `_index.md` frontmatter
+
+Recommended fields:
+
+```yaml
+description: ...      # recommended — shown in menus and autocomplete
+order: [new, add, remove]  # optional — custom subcommand display order
+```
+
+No `type: group` marker is required. A subfolder under `composed/` with `_index.md` is composer-owned by location.
+
+`order` controls the display order in autocomplete and the TUI selector. Listed names appear first in the given order; unlisted subcommands are appended alphabetically. Omit for default alphabetical ordering.
+
+## Subcommand frontmatter
+
+```yaml
+description: What this subcommand does     # recommended
+name: override-name                        # optional — overrides filename-derived name
+engine: liquid                             # optional — pi (default) or liquid
+shell: ask                                 # optional — deny, ask, or allow for Liquid shell blocks
+args:                                      # optional — defines expected arguments
+  - name: target
+    required: true
+    hint: Which item to operate on
+  - name: format
+    required: false
+    type: enum
+    values: [summary, table, json]
+    default: summary
+    hint: Output format
+```
+
+### Field details
+
+| Field | Type | Default | Purpose |
+|-------|------|---------|---------|
+| `description` | string | filename stem | Shown in selector and autocomplete |
+| `name` | string | kebab-case filename | Overrides the subcommand name |
+| `args` | array | none | Defines positional arguments |
+| `engine` | `pi` or `liquid` | `pi` | Rendering engine |
+| `shell` | `deny`, `ask`, or `allow` | config default | Whether Liquid `{% shell %}` blocks execute |
+
+### Args items
+
+Each item in the `args` array:
+
+| Field | Type | Default | Notes |
+|-------|------|---------|-------|
+| `name` | string | **required** | Argument display name |
+| `required` | boolean | `false` | Whether the arg is collected interactively if missing |
+| `hint` | string | `""` | Placeholder text shown in the input prompt |
+| `type` | string | `string` | `string`, `string[]`, `number`, `boolean`, or `enum` |
+| `values` | string[] | none | Allowed values for `enum` |
+| `default` | any | none | Fallback when no value is provided |
+| `rest` | boolean | `false` | Capture remaining positionals into this arg; use on final arg with `type: string[]` |
+
+Parsing is lenient:
+
+- Missing `required` defaults to `false` with a warning
+- Missing `hint` defaults to `""` with a recommendation warning
+- Missing `name` rejects the item entirely
+- Valid items in a partially malformed array are preserved
+
+Runtime coercion is also bounded:
+
+- `number` rejects non-numeric values
+- `boolean` accepts `true/false`, `yes/no`, and `1/0`
+- `enum` rejects values not listed in `values`
+- `string[]` accepts repeated named args (`checks=a checks=b`) and comma-separated values (`checks=a,b`)
+- `rest: true` captures remaining positional args into one `string[]` arg for Liquid prompts
+
+## Fluent validation patterns
+
+Prefer the lowest-friction validation that catches the problem early:
+
+| Need | Pattern |
+|------|---------|
+| Required value | `required: true` |
+| One of a fixed set | `type: enum` + `values` |
+| Number only | `type: number` |
+| Boolean flag | `type: boolean` |
+| List of values | `type: string[]` with repeated named args or comma-separated value |
+| Semantic rule not expressible in frontmatter | Validate in the prompt body, then use `ask_user` to repair/confirm |
+
+Example enum validation:
+
+```yaml
+args:
+  - name: mode
+    required: true
+    type: enum
+    values: [summary, patch, audit]
+    hint: One of summary, patch, or audit
+```
+
+Example list input:
+
+```text
+/release plan PPC-123 "ship trusted shell" checks=typecheck checks=lint checks=test
+```
+
+For semantic validation, make the prompt explicit:
+
+````markdown
+Validate `$1` before proceeding:
+
+```bash
+case "$1" in
+  [A-Z][A-Z]*-[0-9]*) echo "PASS: ticket format" ;;
+  *) echo "FAIL: expected ticket like PPC-123" ;;
+esac
+```
+
+If validation fails, stop and report the expected format. Do not guess a replacement.
+````
+
+A future composer validation extension should stay declarative and close to this shape:
+
+```yaml
+args:
+  - name: ticket
+    required: true
+    hint: Ticket like PPC-123
+    validate:
+      pattern: "^[A-Z][A-Z0-9]+-[0-9]+$"
+      message: "Use an uppercase ticket key like PPC-123"
+```
+
+Do not document `validate:` as implemented until the runtime supports it.
+
+## Liquid rendering
+
+Set `engine: liquid` when the prompt needs named args, conditionals, loops, filters, XML-style blocks, or shell blocks.
+
+```markdown
+---
+description: Build release checklist
+engine: liquid
+args:
+  - name: ticket
+    required: true
+    hint: Ticket ID
+  - name: checks
+    required: false
+    type: string[]
+    hint: Verification checks
+---
+# Release `{{ args.ticket }}`
+
+{% assign check_count = args.checks | size %}
+{% if check_count > 0 %}
+## Checks
+{% for check in args.checks %}
+- [ ] `{{ check }}`
+{% endfor %}
+{% endif %}
+```
+
+Use `{% xml "tag" %}...{% endxml %}` for Claude Code skill-style structured context. Empty XML blocks disappear.
+
+Liquid render context includes:
+
+| Variable | Meaning |
+|----------|---------|
+| `args` | Named/coerced args |
+| `argv` | Raw positional argument array |
+| `arguments` | Raw positional args joined by spaces |
+| `prompt` | Prompt metadata |
+| `now` | ISO timestamp at render time |
+
+For Pi-like `${@:2}` behavior, use `argv` directly or `rest: true`:
+
+```yaml
+args:
+  - name: group_name
+    required: true
+    hint: Group name
+  - name: description
+    required: false
+    type: string[]
+    rest: true
+    hint: Freeform description
+```
+
+```liquid
+Group: {{ args.group_name }}
+Description: {{ args.description | join: " " }}
+Rest manually: {{ argv | slice: 1 | join: " " }}
+All args: {{ arguments }}
+```
+
+## Shell blocks
+
+Liquid prompts can include trusted shell blocks:
+
+```markdown
+---
+description: Run local helper
+engine: liquid
+shell: ask
+args:
+  - name: topic
+    required: true
+    hint: Topic passed to helper
+---
+{% shell %}
+python3 scripts/summarize.py --topic {{ args.topic | shell_quote }}
+{% endshell %}
+```
+
+Shell mode precedence:
+
+1. prompt frontmatter `shell`
+2. project `.pi/prompt-composer.json`
+3. user `~/.pi/agent/prompt-composer.json`
+4. built-in `deny`
+
+Shell-enabled prompts are trusted code, not sandboxed code. Use `shell_quote` for operator-provided values.
+
+## Substitution syntax
+
+Template bodies use Pi-native argument substitution:
+
+| Syntax | Meaning |
+|--------|---------|
+| `$1`, `$2`, … | Positional argument by index |
+| `$@` | All arguments joined by space |
+| `$ARGUMENTS` | Same as `$@` |
+| `${@:N}` | All arguments from position N onward |
+| `${@:N:L}` | L arguments starting from position N |
+| `\$` | Literal `$` (escaped) |
+
+### Example
+
+```markdown
+---
+description: Review a file
+args:
+  - name: file
+    required: true
+    hint: Path to the file to review
+  - name: focus
+    required: false
+    hint: Specific area to focus on
+---
+Review the file at `$1`.
+
+${ focus ? "Focus specifically on: $2" : "" }
+
+Provide a summary and list any issues found.
+Additional context: ${@:3}
+```
+
+**Note:** Conditional rendering (`${ expr }`) is not yet supported. The example above uses plain substitution — `$2` renders as empty string when not provided.
+
+## When to use args
+
+Use `args` when:
+
+- The prompt needs operator-provided values to be useful
+- You want guided interactive collection for missing values
+- The substitution makes the prompt significantly more focused
+
+Skip `args` when:
+
+- The prompt is self-contained with no variable parts
+- The operator will provide context naturally in conversation
+- All arguments are optional and the prompt works without them
+
+## Interactive prompt bodies
+
+When a prompt body requires user confirmation or input collection during execution, use `ask_user` with the **full JSON payload** inline. Do not use prose like "ask the user", "confirm before proceeding", or "prompt for the value" — these are not actionable instructions for a model.
+
+### Confirmation pattern (destructive or irreversible operations)
+
+````markdown
+Use `ask_user` to confirm before proceeding:
+
+```json
+{
+  "question": "Remove the X session from the vault?",
+  "context": "<show the matched row or relevant details here>",
+  "options": [
+    { "title": "Yes, remove it" },
+    { "title": "Cancel" }
+  ],
+  "allowFreeform": false
+}
+```
+````
+
+### Choice pattern (selecting between options mid-operation)
+
+````markdown
+Use `ask_user` to collect the choice:
+
+```json
+{
+  "question": "Which fields should be updated for $1?",
+  "options": [
+    { "title": "Doing", "description": "Update the current task description" },
+    { "title": "Messages", "description": "Update the message count" },
+    { "title": "Cost", "description": "Update the session cost" }
+  ],
+  "allowFreeform": true,
+  "allowMultiple": true
+}
+```
+````
+
+### Input collection pattern (value only knowable at runtime)
+
+````markdown
+If the value isn't available in context, use `ask_user` to collect it:
+
+```json
+{
+  "question": "What is the session ID?",
+  "context": "The session ID is shown in the Pi session header.",
+  "allowFreeform": true
+}
+```
+````
+
+### `ask_user` vs `args` — when to use which
+
+| Situation | Use |
+|-----------|-----|
+| Value known upfront (path, name, ID) | `args` in frontmatter |
+| Confirmation before irreversible action | `ask_user` payload in body |
+| Choice between options mid-operation | `ask_user` payload in body |
+| Value only knowable at runtime (e.g. session ID from context) | `ask_user` payload in body |
+
+### Anti-patterns
+
+✘ `"Confirm with the user before removing"` — vague prose; use an `ask_user` payload with options\
+✘ `"Ask which fields to update"` — use an `ask_user` payload with an options array\
+✘ `"Prompt for the session ID if unavailable"` — use an `ask_user` payload with `allowFreeform: true`

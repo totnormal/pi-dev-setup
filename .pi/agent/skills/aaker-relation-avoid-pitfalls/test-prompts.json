@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-avoid-pitfalls",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Our master brand is getting diluted by too many extensions.",
+      "expected_behavior": "Activate aaker-relation-avoid-pitfalls; run the dilution/promiscuity gate.",
+      "notes": "Dilution risk."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "A business unit wants to borrow the master name just for credibility.",
+      "expected_behavior": "Activate aaker-relation-avoid-pitfalls; require that the link ENHANCE a key master association, else block.",
+      "notes": "Promiscuity gate."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "We acquired a company — should we keep the name or rebrand to the parent?",
+      "expected_behavior": "Activate aaker-relation-avoid-pitfalls; apply the M&A retention test (bond strength/transfer difficulty).",
+      "notes": "M&A retention decision."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Where on the spectrum should this new offering be positioned?",
+      "expected_behavior": "Do NOT activate aaker-relation-avoid-pitfalls; activate aaker-relation-select-separation (decision).",
+      "notes": "Sibling-confusion bait: decision, not risk filter."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Draw the brand architecture map of our portfolio.",
+      "expected_behavior": "Do NOT activate aaker-relation-avoid-pitfalls; activate aaker-relation-spectrum (map).",
+      "notes": "Sibling-confusion bait: framework/map."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "Someone proposed a name change for ego reasons, not architecture logic.",
+      "expected_behavior": "Activate aaker-relation-avoid-pitfalls; flag the ego/convenience motive as a warned failure mode and require a dispassionate architecture analysis.",
+      "notes": "Boundary: name changes should be architecture-driven, not ego-driven."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-select-separation, aaker-relation-spectrum) + 1 edge."
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "prompt": "I need to understand why people buy luxury watches. The functional explanation (telling time) clearly isn't the real reason.",
+    "should_trigger": [
+      "mkpsi-pregnant-moment-selection"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Tests trigger match"
+  },
+  {
+    "prompt": "Write a tagline for our new energy drink.",
+    "should_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action",
+      "mkpsi-emotional-word-bomb-swap"
+    ],
+    "should_not_trigger": [
+      "mkpsi-pregnant-moment-selection"
+    ],
+    "rationale": "Decoy: copywriting should trigger simplify/emotional skills"
+  },
+  {
+    "prompt": "Our car ads show the car driving fast on a mountain road but no one engages. What are we doing wrong?",
+    "should_trigger": [
+      "mkpsi-pregnant-moment-selection",
+      "mkpsi-pregnant-moment-selection"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Tests whether moment-selection triggers correctly"
+  },
+  {
+    "prompt": "Two customers have identical income but one buys premium and the other buys budget. Why?",
+    "should_trigger": [
+      "mkpsi-aspiration-scale-trajectory",
+      "mkpsi-find-real-why"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Tests whether trajectory/demographics triggers the right skill"
+  },
+  {
+    "prompt": "Our ads say \"our revolutionary AI-powered platform\" but customers seem turned off.",
+    "should_trigger": [
+      "mkpsi-buyer-as-discoverer-credit",
+      "mkpsi-audience-metaphor-mirroring"
+    ],
+    "should_not_trigger": [
+      "mkpsi-simplify-message-to-one-clear-action"
+    ],
+    "rationale": "Tests whether credit-stealing diagnosis triggers correctly"
+  }
+]

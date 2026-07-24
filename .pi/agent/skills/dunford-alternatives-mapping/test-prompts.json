@@ -1,0 +1,52 @@
+{
+  "skill": "dunford-alternatives-mapping",
+  "version": "0.1.0",
+  "source_book": "Sales Pitch \u2014 April Dunford",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "Help me with map alternatives as approaches for our B2B SaaS product.",
+      "expected_behavior": "Should activate dunford-alternatives-mapping and produce an actionable Dunford-style artifact with verification.",
+      "notes": "Direct trigger"
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": " alternatives, approaches, competitive landscape, discovery conversation, status quo.",
+      "expected_behavior": "Should activate dunford-alternatives-mapping.",
+      "notes": "Language-signal trigger"
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "Our team is stuck on Map Alternatives as Approaches; give us a step-by-step method and double-check it.",
+      "expected_behavior": "Should activate dunford-alternatives-mapping and include final QA.",
+      "notes": "Process + verification trigger"
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Summarize April Dunford\u2019s biography and speaking style.",
+      "expected_behavior": "Should not activate this skill; this is biography/author summary, not execution.",
+      "notes": "Non-methodology lure"
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Write a generic investor pitch about our 10-year vision and TAM.",
+      "expected_behavior": "Should not activate this skill unless reframed as customer-facing positioning; investor narrative is out of scope.",
+      "notes": "Adjacent but wrong audience"
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "Our homepage copy feels unclear; should we rewrite it or revisit positioning?",
+      "expected_behavior": "May activate a positioning-related Dunford skill if unclear copy appears caused by weak context/value; should diagnose before copywriting.",
+      "notes": "Boundary: copy vs positioning"
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "All should_not_trigger cases must pass. At least one lure tests confusion with non-customer-facing narrative."
+}

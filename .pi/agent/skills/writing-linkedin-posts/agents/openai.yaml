@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing Linkedin Posts"
+  short_description: "Create engaging, authentic LinkedIn posts like a Top Voice. Use this skill when asked to write LinkedIn content, social media posts for LinkedIn, professional thought leadership content, or help with LinkedIn engagement strategy. Triggers include requests for LinkedIn posts, professional social content, thought leadership pieces, or viral/engaging LinkedIn content."
+  default_prompt: "Use the writing-linkedin-posts skill. Follow the workflows and templates in SKILL.md. Ask minimal clarifying questions and produce structured outputs."

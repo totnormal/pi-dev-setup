@@ -1,0 +1,9 @@
+{
+  "name": "cline",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.ts",
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}

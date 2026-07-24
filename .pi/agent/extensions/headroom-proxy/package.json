@@ -1,0 +1,14 @@
+{
+  "name": "headroom-proxy",
+  "version": "1.0.0",
+  "description": "Routes Pi API calls through Headroom context-compression proxy",
+  "type": "module",
+  "main": "index.ts",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "headroom",
+    "proxy"
+  ],
+  "license": "MIT"
+}

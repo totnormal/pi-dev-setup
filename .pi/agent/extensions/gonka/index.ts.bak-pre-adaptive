@@ -1,0 +1,61 @@
+import type { ExtensionAPI, ProviderModelConfig } from "@earendil-works/pi-coding-agent";
+
+const GONKA_BASE_URL = "https://hskyauefqcgbvgvxkluj.supabase.co/functions/v1/gonka";
+const GONKA_API_KEY = "sk_4e17c285cbb34753b53525245f199753cb1d5de1f2764185b5e33c31a14c2e3d";
+
+async function fetchGonkaModels(): Promise<ProviderModelConfig[]> {
+  try {
+    const response = await fetch(`${GONKA_BASE_URL}/models`, {
+      headers: {
+        "Authorization": `Bearer ${GONKA_API_KEY}`,
+        "Content-Type": "application/json"
+      }
+    });
+    if (!response.ok) return [];
+    const json = (await response.json()) as { data: Array<{ id: string }> };
+    return json.data.map((m) => ({
+      id: m.id,
+      name: m.id,
+      reasoning: m.id.toLowerCase().includes("think") || m.id.toLowerCase().includes("reason"),
+      input: ["text"],
+      cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0 },
+      contextWindow: 128000,
+      maxTokens: 8192
+    }));
+  } catch (e) {
+    return [];
+  }
+}
+
+export default async function (pi: ExtensionAPI) {
+  const providerId = "gonka";
+
+  async function refresh() {
+    const models = await fetchGonkaModels();
+    pi.registerProvider(providerId, {
+      name: "GonkaAI (MiniMax M2.7)",
+      baseUrl: GONKA_BASE_URL,
+      apiKey: GONKA_API_KEY,
+      api: "openai-completions",
+      authHeader: true,
+      models
+    });
+  }
+
+  // Initial registration
+  await refresh();
+
+  // Refresh on each new session
+  pi.on("session_start", async () => {
+    await refresh();
+  });
+
+  // Manual refresh command
+  pi.registerCommand("gonka-refresh", {
+    description: "Refresh GonkaAI models",
+    handler: async (_args, ctx) => {
+      await refresh();
+      ctx.ui.notify("GonkaAI models refreshed", "info");
+    }
+  });
+}

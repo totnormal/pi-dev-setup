@@ -1,0 +1,29 @@
+{
+  "skill": "aaker-relation-output-verifier",
+  "darwin_compatible": true,
+  "prompts": [
+    {
+      "text": "Our deck says 'make XYZ a subbrand of the master' but doesn't say who drives purchase \u2014 is this ready?",
+      "expect": "fail_or_fixes",
+      "missing": [
+        "driver role statement"
+      ]
+    },
+    {
+      "text": "P&G: Tide and Pantene each fully drive the purchase; P&G is invisible. House of Brands, justified by contradictory niches. Verify.",
+      "expect": "pass"
+    },
+    {
+      "text": "We'll endorse the new line with a token link but haven't checked if the endorser is known enough.",
+      "expect": "fixes",
+      "missing": [
+        "endorser equity check (aaker-relation-endorsed-brands)"
+      ]
+    },
+    {
+      "text": "Design our new logo",
+      "expect": "no_audit",
+      "note": "out of scope"
+    }
+  ]
+}

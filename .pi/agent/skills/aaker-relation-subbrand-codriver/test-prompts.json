@@ -1,0 +1,52 @@
+{
+  "skill": "aaker-relation-subbrand-codriver",
+  "version": "0.1.0",
+  "source_book": "The Brand Relationship Spectrum — Aaker & Joachimsthaler (2000)",
+  "darwin_compatible": true,
+  "test_cases": [
+    {
+      "id": "should-trigger-01",
+      "type": "should_trigger",
+      "prompt": "We want to attach a subbrand to the master that stretches it into a new segment.",
+      "expected_behavior": "Activate aaker-relation-subbrand-codriver; design subbrand-as-driver and check association transfer.",
+      "notes": "Subbrand-as-driver request."
+    },
+    {
+      "id": "should-trigger-02",
+      "type": "should_trigger",
+      "prompt": "Launch it Gillette Mach3 style where both the master and the new name lead.",
+      "expected_behavior": "Activate aaker-relation-subbrand-codriver; set up a co-driver and run the quality-parity test.",
+      "notes": "Co-driver request."
+    },
+    {
+      "id": "should-trigger-03",
+      "type": "should_trigger",
+      "prompt": "How do we extend the master with a subbrand without it just being a descriptor?",
+      "expected_behavior": "Activate aaker-relation-subbrand-codriver; explain closeness rule and name the subbrand for freedom.",
+      "notes": "Distinct subbrand vs descriptor."
+    },
+    {
+      "id": "should-not-trigger-01",
+      "type": "should_not_trigger",
+      "prompt": "Just endorse it with the parent; the parent should play only a minor driver role.",
+      "expected_behavior": "Do NOT activate aaker-relation-subbrand-codriver; activate aaker-relation-endorsed-brands (minor driver role).",
+      "notes": "Sibling-confusion bait: endorsed, not subbrand."
+    },
+    {
+      "id": "should-not-trigger-02",
+      "type": "should_not_trigger",
+      "prompt": "Make it a descriptive add-on under the master, full branded house.",
+      "expected_behavior": "Do NOT activate aaker-relation-subbrand-codriver; activate aaker-relation-branded-house (descriptor, not named subbrand).",
+      "notes": "Sibling-confusion bait: branded house."
+    },
+    {
+      "id": "edge-01",
+      "type": "edge_case",
+      "prompt": "We want a co-driver but the subbrand is clearly lower quality than our premium master.",
+      "expected_behavior": "Activate aaker-relation-subbrand-codriver but warn: unequal quality tarnishes the prestige master; downgrade to endorser role (see aaker-relation-avoid-pitfalls).",
+      "notes": "Boundary: co-driver requires comparable quality."
+    }
+  ],
+  "minimum_pass_rate": 0.8,
+  "notes": "≥3 should_trigger + 2 should_not_trigger (sibling baits: aaker-relation-endorsed-brands, aaker-relation-branded-house) + 1 edge."
+}

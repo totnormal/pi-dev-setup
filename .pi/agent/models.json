@@ -1,0 +1,316 @@
+{
+  "providers": {
+    "openrouter": {
+      "baseUrl": "https://openrouter.ai/api/v1",
+      "api": "openai-completions",
+      "apiKey": "OPENROUTER_API_KEY",
+      "compat": {
+        "supportsLongCacheRetention": true,
+        "sendSessionAffinityHeaders": true
+      },
+      "models": [
+        {
+          "id": "qwen/qwen3-vl-8b-instruct",
+          "name": "Qwen3 VL 8B Instruct",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 256000,
+          "maxTokens": 4096,
+          "cost": {
+            "input": 1.5e-7,
+            "output": 6e-7,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "google/gemini-2.5-flash",
+          "name": "Gemini 2.5 Flash",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 1048576,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 1.5e-7,
+            "output": 6e-7,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "zai": {
+      "baseUrl": "https://api.z.ai/api/coding/paas/v4",
+      "api": "openai-completions",
+      "apiKey": "24401a248912476f930ce595a59f7035.lmHyYZFx5eVcfsJZ",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "thinkingFormat": "zai",
+        "zaiToolStream": true
+      },
+      "models": [
+        {
+          "id": "glm-5.1",
+          "name": "GLM 5.1",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-5",
+          "name": "GLM 5",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "glm-4.6",
+          "name": "GLM 4.6",
+          "reasoning": true,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "nous": {
+      "baseUrl": "https://api.nousresearch.com/v1",
+      "api": "openai-completions",
+      "apiKey": "NOUS_API_KEY",
+      "models": [
+        {
+          "id": "nousresearch/hermes-3-llama-3.1-405b",
+          "name": "Hermes 3 405B",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nousresearch/hermes-3-llama-3.1-70b",
+          "name": "Hermes 3 70B",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nousresearch/hermes-2-mixtral-8x7b-dpo",
+          "name": "Hermes 2 Mixtral 8x7B DPO",
+          "reasoning": false,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 32768,
+          "maxTokens": 4096,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nousresearch/llama-3.1-nous-70b-instruct",
+          "name": "Llama 3.1 Nous 70B Instruct",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "nousresearch/llama-3.1-nous-8b-instruct",
+          "name": "Llama 3.1 Nous 8B Instruct",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 128000,
+          "maxTokens": 8192,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    },
+    "omniroute": {
+      "baseUrl": "http://localhost:20128/v1",
+      "api": "openai-completions",
+      "apiKey": "omniroute-no-auth",
+      "models": [
+        {
+          "id": "auto/coding:free",
+          "name": "Auto Coding Free",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/best-free",
+          "name": "Auto Best Free",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/coding:cheap",
+          "name": "Auto Coding Cheap",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/best-coding",
+          "name": "Auto Best Coding",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/chat",
+          "name": "Auto Chat",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/cheap",
+          "name": "Auto Cheap",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        },
+        {
+          "id": "auto/fast",
+          "name": "Auto Fast",
+          "reasoning": false,
+          "input": [
+            "text"
+          ],
+          "contextWindow": 200000,
+          "maxTokens": 16384,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}
